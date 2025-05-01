@@ -1,6 +1,8 @@
-from flask import Blueprint, request, jsonify, redirect, url_for, render_template, flash
+from flask import Blueprint, request, jsonify, redirect, url_for, render_template, flash, session
+from datetime import datetime
+
 from werkzeug.security import generate_password_hash, check_password_hash
-from .models import db, Team, User
+from .models import db, Team, User, League
 
 bp = Blueprint('main', __name__)
 
@@ -20,8 +22,10 @@ def login():
             flash('Invalid credentials')
             return redirect(url_for('main.login'))
 
+        session['user_id'] = user.id  # ✅ store user in session
         flash('Login successful!')
         return redirect(url_for('main.home'))
+
 
     return render_template('login.html')
 
@@ -57,7 +61,20 @@ def signup():
 # After login, show home
 @bp.route('/home')
 def home():
-    return render_template('home.html')
+    if 'user_id' not in session:
+        flash('Please log in to continue.')
+        return redirect(url_for('main.login'))
+
+    user = User.query.get(session['user_id'])
+    return render_template('home.html', user=user)
+
+@bp.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    flash('Logged out successfully.')
+    return redirect(url_for('main.login'))
+
+
 
 # Create team
 @bp.route('/teams', methods=['POST'])
@@ -93,3 +110,58 @@ def get_teams():
     } for team in teams]
 
     return jsonify({'teams': teams_list})
+@bp.route('/league-management')
+def league_management():
+    if 'user_id' not in session:
+        flash('Please log in to continue.')
+        return redirect(url_for('main.login'))
+
+    return render_template('leagues.html')
+
+# Get all leagues
+@bp.route('/leagues', methods=['GET'])
+def get_leagues():
+    leagues = League.query.all()
+    leagues_data = [{
+        'id': league.id,
+        'name': league.name,
+        'description': league.description,
+        'start_date': league.start_date.strftime('%Y-%m-%d'),
+        'end_date': league.end_date.strftime('%Y-%m-%d')
+    } for league in leagues]
+    return jsonify(leagues_data), 200
+
+# Create a new league
+@bp.route('/leagues', methods=['POST'])
+def create_league():
+    data = request.get_json()
+    print("Received data:", data)
+
+    name = data.get('name')
+    description = data.get('description')
+    start_date = data.get('start_date')
+    end_date = data.get('end_date')
+
+    if not all([name, start_date, end_date]):
+        return jsonify({'error': 'Missing required fields'}), 400
+
+    try:
+        # Convert date strings to date objects
+        start_date_obj = datetime.strptime(start_date, '%Y-%m-%d').date()
+        end_date_obj = datetime.strptime(end_date, '%Y-%m-%d').date()
+
+        new_league = League(
+            name=name,
+            description=description,
+            start_date=start_date_obj,
+            end_date=end_date_obj
+        )
+
+        db.session.add(new_league)
+        db.session.commit()
+
+        return jsonify({'message': 'League created successfully'}), 201
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500

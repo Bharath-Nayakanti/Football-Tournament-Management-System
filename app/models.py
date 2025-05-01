@@ -1,4 +1,5 @@
 from . import db
+from datetime import date
 from werkzeug.security import generate_password_hash, check_password_hash
 
 class Team(db.Model):
@@ -17,3 +18,13 @@ class User(db.Model):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)    
+
+class League(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(255))
+    start_date = db.Column(db.Date, nullable=False)
+    end_date = db.Column(db.Date, nullable=False)
+
+    def __repr__(self):
+        return f"<League {self.name}>"

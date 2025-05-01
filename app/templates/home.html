@@ -1,35 +1,28 @@
+<!-- app/templates/home.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Football Tournament</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 100px;
-            background-color: #f7f7f7;
-        }
-        h1 {
-            color: #333;
-        }
-        a {
-            display: inline-block;
-            margin-top: 20px;
-            text-decoration: none;
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-        }
-        a:hover {
-            background-color: #45a049;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Welcome to the Football Tournament System!</h1>
-    <p>You are now logged in.</p>
-    <a href="/">Logout</a>  <!-- Optional logout link to go back to login -->
+    <div class="home-wrapper">
+        <div class="top-bar">
+            <div class="user-info">
+                <p>Welcome, {{ user.username }} (<strong>{{ user.email }}</strong>)</p>
+            </div>
+            <a href="{{ url_for('main.logout') }}" class="logout-btn">Logout</a>
+        </div>
+
+        <div class="center-box">
+            <a href="{{ url_for('main.league_management') }}" class="football-management-btn">
+                <img src="{{ url_for('static', filename='football.jpg') }}" alt="Football">
+                <span style="margin-top: 10px;">League Management</span>
+            </a>
+        </div>
+    </div>
 </body>
+
 </html>

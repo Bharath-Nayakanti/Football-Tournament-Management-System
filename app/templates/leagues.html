@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>League Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='leagues.css') }}">
+
+</head>
+<body>
+    <div class="container">
+        <h1>League Management</h1>
+
+        <form id="league-form">
+            <label for="name">League Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="description">Description:</label>
+            <input type="text" id="description" name="description">
+
+            <label for="start_date">Start Date:</label>
+            <input type="date" id="start_date" name="start_date" required>
+
+            <label for="end_date">End Date:</label>
+            <input type="date" id="end_date" name="end_date" required>
+
+            <button type="submit">Add League</button>
+        </form>
+
+        <h2>Existing Leagues</h2>
+        <table id="league-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script>
+        async function fetchLeagues() {
+            const res = await fetch('/leagues');
+            const data = await res.json();
+
+            const tbody = document.querySelector('#league-table tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(league => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${league.name}</td>
+                    <td>${league.description || ''}</td>
+                    <td>${league.start_date}</td>
+                    <td>${league.end_date}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        document.getElementById('league-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = {
+                name: document.getElementById('name').value,
+                description: document.getElementById('description').value,
+                start_date: document.getElementById('start_date').value,
+                end_date: document.getElementById('end_date').value
+            };
+
+            const res = await fetch('/leagues', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(formData)
+            });
+
+            if (res.ok) {
+                await fetchLeagues();
+                e.target.reset(); // Clear form
+            } else {
+                alert('Failed to create league');
+            }
+        });
+
+        fetchLeagues(); // Load leagues on page load
+    </script>
+</body>
+</html>
