@@ -1,0 +1,1433 @@
+/* League/Team Management Styles */
+body.management {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f7fa;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.management-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Card Styles */
+.management-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+/* Header Styles */
+.management-header {
+    color: #2c3e50;
+    margin: 0 0 20px 0;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+/* Table Styles */
+.management-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.management-table th {
+    background-color: #f8f9fa;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    color: #34495e;
+}
+
+.management-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.management-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Form Styles */
+.management-form-group {
+    margin-bottom: 20px;
+}
+
+.management-form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #34495e;
+}
+
+.management-form-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+/* Button Styles */
+.management-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.management-btn:hover {
+    background-color: #2980b9;
+}
+
+.management-btn-danger {
+    background-color: #e74c3c;
+}
+
+.management-btn-danger:hover {
+    background-color: #c0392b;
+}
+
+/* Tab Styles */
+.management-tabs {
+    margin: 30px 0;
+}
+
+.management-tab-header {
+    display: flex;
+    border-bottom: 1px solid #ecf0f1;
+    margin-bottom: 20px;
+}
+
+.management-tab-btn {
+    padding: 12px 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #7f8c8d;
+    position: relative;
+    margin-right: 5px;
+}
+
+.management-tab-btn.active {
+    color: #3498db;
+    font-weight: 600;
+}
+
+.management-tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #3498db;
+}
+
+.management-tab-content {
+    display: none;
+    padding: 20px 0;
+}
+
+.management-tab-content.active {
+    display: block;
+}
+
+/* Alert Messages */
+.management-alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.management-alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.management-alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Grid Layout */
+.management-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .management-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .management-container {
+        padding: 15px;
+    }
+    
+    .management-card {
+        padding: 20px;
+    }
+    
+    .management-tab-btn {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+}
+
+/* Add to existing style2.css */
+
+/* Compact Form Styles */
+.compact-form {
+    max-width: 800px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    flex: 1;
+}
+
+.management-table-container {
+    overflow-x: auto;
+}
+
+.league-link {
+    color: #3498db;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.league-link:hover {
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+/* Add to your existing style2.css */
+
+/* Alert Messages */
+.alert-messages {
+    margin-bottom: 20px;
+}
+
+.alert {
+    padding: 12px 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.alert-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Form Help Text */
+.form-text {
+    display: block;
+    margin-top: 5px;
+    font-size: 12px;
+    color: #6c757d;
+}
+
+/* League Link */
+.league-link {
+    color: #3498db;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.league-link:hover {
+    text-decoration: underline;
+}
+/* ===== Dark Theme (Team Management) ===== */
+.management-dark {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #e6e6e6;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.glass-container {
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+.neon-card {
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.header-glow::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: -50px;
+    width: 100px;
+    height: 100px;
+    background: rgba(100, 255, 255, 0.1);
+    filter: blur(50px);
+}
+
+.neon-title {
+    color: #fff;
+    text-shadow: 0 0 10px rgba(100, 255, 255, 0.7);
+    font-weight: 600;
+}
+
+/* ===== Glass Theme (League Management) ===== */
+.management-glass {
+    background: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.card-glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    padding: 2rem;
+    color: white;
+}
+
+.gradient-text {
+    background: linear-gradient(90deg, #ff8a00, #e52e71);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 600;
+}
+
+/* ===== Common Modern Elements ===== */
+.btn-gradient {
+    background: linear-gradient(90deg, #ff8a00, #e52e71);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 138, 0, 0.4);
+}
+
+/* Add all other CSS rules from previous implementations */
+/* ... */
+/* ===== Glass Theme ===== */
+.management-glass {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #e6e6e6;
+    min-height: 100vh;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.particle {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    animation: float 15s infinite linear;
+}
+
+@keyframes float {
+    0% { transform: translateY(0) translateX(0); opacity: 1; }
+    50% { transform: translateY(-100px) translateX(50px); opacity: 0.5; }
+    100% { transform: translateY(0) translateX(0); opacity: 1; }
+}
+
+.glass-container {
+    position: relative;
+    z-index: 1;
+    background: rgba(15, 23, 42, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    overflow: hidden;
+}
+
+.card-glass {
+    padding: 2rem;
+}
+
+/* ===== Header Styles ===== */
+.league-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.gradient-text {
+    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.league-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.status-dot.active {
+    background: #00ff9d;
+    box-shadow: 0 0 10px #00ff9d;
+}
+
+.status-text {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+}
+
+/* ===== Tab Styles ===== */
+.modern-tabs {
+    margin-top: 2rem;
+}
+
+.tab-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.tab-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.tab-btn.active {
+    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    box-shadow: 0 5px 15px rgba(0, 242, 254, 0.3);
+}
+
+.tab-contents {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 1.5rem;
+    min-height: 300px;
+}
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Table Styles ===== */
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.btn-glass {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-glass:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.modern-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.modern-table th {
+    background: rgba(255, 255, 255, 0.1);
+    color: #4facfe;
+    padding: 1rem;
+    text-align: left;
+}
+
+.modern-table td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.team-logo {
+    width: 30px;
+    height: 30px;
+    background: rgba(79, 172, 254, 0.2);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.5rem;
+    color: #4facfe;
+}
+
+.btn-icon {
+    color: rgba(255, 255, 255, 0.7);
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-icon:hover {
+    color: #00f2fe;
+    transform: scale(1.2);
+}
+
+/* ===== Empty States ===== */
+.empty-state, .coming-soon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+}
+
+.empty-state i, .coming-soon i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #4facfe;
+}
+
+/* ===== Flash Messages ===== */
+.flash-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    max-width: 400px;
+}
+
+.flash-message {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.flash-success {
+    background: rgba(40, 167, 69, 0.9);
+    color: white;
+}
+
+.flash-error {
+    background: rgba(220, 53, 69, 0.9);
+    color: white;
+}
+
+.flash-warning {
+    background: rgba(255, 193, 7, 0.9);
+    color: #212529;
+}
+/* ===== Button Styles ===== */
+.btn-gradient-pulse {
+    position: relative;
+    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-weight: 500;
+    cursor: pointer;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+    z-index: 1;
+}
+
+.btn-gradient-pulse:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+}
+
+.btn-gradient-pulse::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.btn-gradient-pulse:hover::before {
+    opacity: 1;
+}
+
+.btn-gradient-pulse .btn-hover-effect {
+    position: absolute;
+    background: white;
+    width: 50px;
+    height: 100%;
+    left: -50px;
+    top: 0;
+    transform: skewX(-20deg);
+    transition: all 0.5s ease;
+    opacity: 0.3;
+}
+
+.btn-gradient-pulse:hover .btn-hover-effect {
+    left: 120%;
+}
+
+/* Delete Button */
+.btn-delete {
+    position: relative;
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-delete:hover {
+    background: rgba(220, 53, 69, 0.2);
+    transform: scale(1.1);
+}
+
+.btn-delete .tooltip {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #dc3545;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.btn-delete:hover .tooltip {
+    opacity: 1;
+}
+
+/* Input Groups */
+.input-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.glow-input {
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 10px 0;
+    width: 100%;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.glow-input:focus {
+    outline: none;
+    border-bottom-color: #4facfe;
+    box-shadow: 0 2px 10px rgba(79, 172, 254, 0.2);
+}
+
+.input-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #4facfe;
+    transition: width 0.3s ease;
+}
+
+/* Team Avatar */
+.team-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background: rgba(79, 172, 254, 0.2);
+    border-radius: 50%;
+    margin-right: 10px;
+    color: #4facfe;
+}
+/* ===== Global Reset ===== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ===== Auth Pages ===== */
+.auth-page {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.auth-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') no-repeat center center;
+    background-size: cover;
+    opacity: 0.15;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 450px;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.auth-card {
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.logo-circle {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 2.5rem;
+    color: white;
+}
+
+.auth-header h1 {
+    margin: 0 0 0.5rem;
+    font-size: 1.8rem;
+    color: white;
+}
+
+.auth-header p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+}
+
+/* ===== Form Styles ===== */
+.auth-form {
+    margin-top: 2rem;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 1.8rem;
+    width: 100%;
+}
+
+.input-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1rem;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+.auth-input {
+    width: 100%;
+    padding: 15px 20px 15px 50px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    color: white;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.auth-input:focus {
+    outline: none;
+    border-color: #4facfe;
+    box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.15);
+}
+
+.auth-input:focus + .input-icon {
+    color: #4facfe;
+}
+
+.input-group label {
+    position: absolute;
+    left: 50px;
+    top: 15px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
+    background: transparent;
+}
+
+.auth-input:focus + label,
+.auth-input:not(:placeholder-shown) + label {
+    top: -10px;
+    left: 15px;
+    font-size: 0.8rem;
+    background: rgba(15, 23, 42, 0.9);
+    padding: 0 8px;
+    color: #4facfe;
+    z-index: 3;
+}
+
+.input-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #4facfe;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+    z-index: 2;
+}
+
+.auth-input:focus ~ .input-bar {
+    transform: scaleX(1);
+}
+
+/* ===== Button Styles ===== */
+.btn-auth {
+    width: 100%;
+    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    margin-top: 1.5rem;
+}
+
+.btn-auth:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+}
+
+/* ===== Footer Links ===== */
+.auth-footer {
+    text-align: center;
+    margin-top: 2rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+}
+
+.auth-footer a {
+    color: #4facfe;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+}
+
+.forgot-password {
+    display: block;
+    margin-top: 1rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.forgot-password:hover {
+    color: #4facfe;
+}
+
+/* ===== Responsive Adjustments ===== */
+@media (max-width: 768px) {
+    .auth-container {
+        padding: 1.5rem;
+    }
+    
+    .auth-card {
+        padding: 1.8rem;
+    }
+    
+    .auth-input {
+        padding: 14px 18px 14px 45px;
+    }
+    
+    .input-icon {
+        left: 12px;
+    }
+    
+    .input-group label {
+        left: 45px;
+    }
+    
+    .auth-input:focus + label,
+    .auth-input:not(:placeholder-shown) + label {
+        left: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 1.5rem;
+    }
+    
+    .auth-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .btn-auth {
+        padding: 14px;
+    }
+}/* Fixtures Table Styles */
+#fixtures-table-body tr.empty-state {
+    text-align: center;
+    background: transparent;
+}
+
+#fixtures-table-body tr.empty-state td {
+    padding: 40px;
+    color: rgba(255,255,255,0.7);
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-badge.pending {
+    background: rgba(255, 193, 7, 0.2);
+    color: #FFC107;
+    border: 1px solid #FFC107;
+}
+
+.status-badge.completed {
+    background: rgba(76, 175, 80, 0.2);
+    color: #4CAF50;
+    border: 1px solid #4CAF50;
+}
+
+.match-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.team-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.team-badge .logo {
+    width: 24px;
+    height: 24px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vs-separator {
+    margin: 0 10px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 300;
+}
+/* League Hub Styles */
+.league-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.option-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    transition: all 0.3s ease;
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+.option-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.option-card.coming-soon {
+    opacity: 0.7;
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: #6e8efb;
+}
+
+/* Content Header */
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+/* Action Bar */
+.action-bar {
+    margin: 20px 0;
+    text-align: right;
+}
+
+/* Back Button */
+.btn-glass {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Matchup Display */
+.matchup {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.matchup .vs {
+    color: #aaa;
+    font-size: 0.9em;
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.status-badge.pending {
+    background: rgba(255, 193, 7, 0.2);
+    color: #ffc107;
+}
+
+.status-badge.completed {
+    background: rgba(40, 167, 69, 0.2);
+    color: #28a745;
+}
+/* Leaderboard specific styles */
+.position {
+    font-weight: bold;
+    width: 30px;
+    display: inline-block;
+    text-align: center;
+}
+
+.position-1 { color: gold; }
+.position-2 { color: silver; }
+.position-3 { color: #cd7f32; } /* bronze */
+
+.team-cell {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-content: flex-start;
+}
+
+.form-guide {
+    font-family: monospace;
+    letter-spacing: 2px;
+}
+
+/* Add these to your existing CSS */
+.league-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-left: 1rem;
+}
+
+.league-status.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.league-status.completed {
+    background-color: #607D8B;
+    color: white;
+}
+
+.quick-stats {
+    display: flex;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.stat-card {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+/* Add more styles as needed for the new components */
+
+/* League Status */
+.league-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-left: 1rem;
+}
+.league-status.active {
+    background-color: #4CAF50;
+    color: white;
+}
+.league-status.completed {
+    background-color: #607D8B;
+    color: white;
+}
+
+/* Quick Stats */
+.quick-stats {
+    display: flex;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+.stat-card {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+}
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.stat-label {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+/* Options Grid */
+.league-options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+}
+.option-card {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+}
+.option-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    font-size: 1.2rem;
+}
+.card-icon.teams { background: rgba(66, 165, 245, 0.2); color: #42A5F5; }
+.card-icon.fixtures { background: rgba(255, 152, 0, 0.2); color: #FF9800; }
+.card-icon.leaderboard { background: rgba(255, 193, 7, 0.2); color: #FFC107; }
+.card-content {
+    flex: 1;
+}
+.card-content h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+.card-content p {
+    margin: 0.2rem 0 0;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+.card-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: 1rem;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+}
+.arrow {
+    opacity: 0.5;
+}
+
+/* Recent Matches */
+.recent-matches {
+    margin-top: 2rem;
+}
+.match-list {
+    margin-top: 1rem;
+}
+.match-item {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.match-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(76, 175, 80, 0.2);
+    color: #4CAF50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    font-size: 0.9rem;
+}
+.match-details p {
+    margin: 0;
+}
+.match-date {
+    opacity: 0.6;
+    font-size: 0.8rem;
+}
+
+/* Empty State */
+.empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 0.5rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Admin Badges */
+.badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.badge-admin {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.badge-user {
+    background-color: #2196F3;
+    color: white;
+}
+
+/* Admin Buttons */
+.btn-success {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+}
+
+.btn-warning {
+    background-color: #FFC107;
+    color: #212121;
+    border: none;
+}
+
+.btn-danger {
+    background-color: #F44336;
+    color: white;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #3e8e41;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+}
+
+.btn-danger:hover {
+    background-color: #d32f2f;
+}
+
+/* Admin Background */
+.admin-bg {
+    background: linear-gradient(135deg, #2c3e50 0%, #4ca1af 100%);
+}

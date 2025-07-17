@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL Match Predictor | Tournament System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='ipl_prediction.css') }}">
+</head>
+<body>
+    <div class="prediction-container">
+        <!-- Back Button Added Here -->
+        <a href="{{ url_for('main.sports_predictions') }}" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Predictions
+        </a>
+        
+        <h1><i class="fas fa-cricket"></i> IPL Match Predictor</h1>
+        
+        <!-- Rest of your form remains exactly the same -->
+        <form class="prediction-form" action="/predict" method="POST">
+            
+        </form>
+        
+        {% if prediction %}
+        <div class="prediction-result" id="predictionResult" style="display: block;">
+            
+        </div>
+        {% endif %}
+
+        
+        
+        <form class="prediction-form" action="/predict" method="POST">
+            <div class="form-group">
+                <label for="team1">Team 1</label>
+                <select name="team1" id="team1" required>
+                    <option value="">Select Team</option>
+                    {% for team in teams %}  <!-- This will now be in alphabetical order -->
+                    <option value="{{ team }}">{{ team }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="team2">Team 2</label>
+                <select name="team2" id="team2" required>
+                    <option value="">Select Team</option>
+                    {% for team in teams %}  <!-- Same sorted list -->
+                    <option value="{{ team }}">{{ team }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="venue">Venue</label>
+                <select name="venue" id="venue" required>
+                    <option value="">Select Venue</option>
+                    {% for venue in venues %}  <!-- Alphabetically sorted -->
+                    <option value="{{ venue }}">{{ venue }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="toss_winner">Toss Winner</label>
+                <select name="toss_winner" id="toss_winner" required>
+                    <option value="">Select Team</option>
+                    <option value="team1">Team 1</option>
+                    <option value="team2">Team 2</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="toss_decision">Toss Decision</label>
+                <select name="toss_decision" id="toss_decision" required>
+                    <option value="">Select Decision</option>
+                    <option value="bat">Bat</option>
+                    <option value="field">Field</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="predict-btn">
+                <i class="fas fa-bolt"></i> Predict Winner
+            </button>
+        </form>
+        
+        {% if prediction %}
+        <div class="prediction-result" id="predictionResult" style="display: block;">
+            <h3 class="result-title">Prediction Result</h3>
+            <div class="winner-display">
+                <i class="fas fa-trophy"></i>
+                <span>Winner: <strong>{{ prediction }}</strong></span>
+            </div>
+            {% if confidence %}
+            <p>Confidence: {{ confidence }}%</p>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Form submission handling
+        document.querySelector('.prediction-form').addEventListener('submit', function(e) {
+            const team1 = document.getElementById('team1').value;
+            const team2 = document.getElementById('team2').value;
+            
+            if (team1 === team2) {
+                e.preventDefault();
+                alert('Please select two different teams');
+                return false;
+            }
+            
+            // You can add more validation here if needed
+            return true;
+        });
+        
+        // Dynamic toss winner options
+        document.getElementById('team1').addEventListener('change', updateTossWinnerOptions);
+        document.getElementById('team2').addEventListener('change', updateTossWinnerOptions);
+        
+        function updateTossWinnerOptions() {
+            const team1 = document.getElementById('team1').value;
+            const team2 = document.getElementById('team2').value;
+            const tossWinnerSelect = document.getElementById('toss_winner');
+            
+            // Clear existing options
+            tossWinnerSelect.innerHTML = '<option value="">Select Team</option>';
+            
+            if (team1) {
+                tossWinnerSelect.innerHTML += `<option value="team1">${team1}</option>`;
+            }
+            if (team2) {
+                tossWinnerSelect.innerHTML += `<option value="team2">${team2}</option>`;
+            }
+        }
+    </script>
+</body>
+</html>

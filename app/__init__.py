@@ -1,22 +1,39 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
 from config import Config
-from flask_migrate import Migrate
 
-# Initialize the db object
+# Initialize extensions
 db = SQLAlchemy()
-migrate = Migrate()
+login_manager = LoginManager()
 
-def create_app():
-    app = Flask(__name__, instance_relative_config=True)
-    app.config.from_object(Config)
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
 
-    # Initialize the db with the app
+    # Initialize extensions
     db.init_app(app)
-    migrate.init_app(app, db)
+    login_manager.init_app(app)
+    
+    # Configure login manager
+    login_manager.login_view = 'main.login'
+    login_manager.login_message_category = 'info'
 
-    # Register the blueprint
-    from .routes import bp
-    app.register_blueprint(bp)
+    # Register blueprints
+    from app.routes import bp as main_bp
+    app.register_blueprint(main_bp)
+
+    # User loader
+    from app.models import User
+
+    
+    
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
+    
+
+
+    
 
     return app

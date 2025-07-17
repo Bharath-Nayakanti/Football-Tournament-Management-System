@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Predictions | Tournament System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='sports_predictions.css') }}">
+    <!-- Add cricket icon font -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body class="sports-predictions-body">
+    <!-- Animated Background -->
+    <div class="sports-particles" id="sportsParticles"></div>
+
+    <!-- Main Glass Container -->
+    <div class="sports-main-container">
+        <!-- Navigation Header -->
+        <header class="sports-header">
+            <a href="{{ url_for('main.home') }}" class="sports-nav-btn">
+                <i class="fas fa-arrow-left"></i> Dashboard
+            </a>
+            <div class="sports-header-title">
+                <i class="fas fa-chart-line"></i>
+                <h1>Sports Predictions Hub</h1>
+            </div>
+            <a href="{{ url_for('main.logout') }}" class="sports-nav-btn sports-logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </header>
+
+        <!-- Prediction Cards Grid -->
+        <main class="sports-content">
+            <div class="sports-grid">
+                <!-- IPL Card -->
+                <div class="sports-card" id="iplPredictorCard">
+                    <div class="sports-card-glass">
+                        <div class="sports-icon cricket">
+                            <i class="fas fa-baseball-ball"></i> <!-- Cricket-like icon -->
+                        </div>
+                        <h3 class="sports-gradient-text">IPL Predictor</h3>
+                        <p>Predict match outcomes with our advanced machine learning model analyzing team performance, player stats, and historical data.</p>
+                        <div class="sports-card-footer">
+                            <span class="sports-live-badge">LIVE MODEL</span>
+                            <span class="sports-accuracy">92% Accuracy</span>
+                        </div>
+                        <div class="sports-glow"></div>
+                    </div>
+                </div>
+
+                <!-- F1 Card (Coming Soon) -->
+                <div class="sports-card coming-soon">
+                    <div class="sports-card-glass">
+                        <div class="sports-icon f1">
+                            <i class="fas fa-flag-checkered"></i>
+                        </div>
+                        <h3>Formula 1 Predictor</h3>
+                        <p>Coming soon - predictive analytics for race outcomes based on qualifying, track history, and team performance.</p>
+                        <div class="sports-card-footer">
+                            <span class="sports-soon-badge">COMING SOON</span>
+                        </div>
+                        <div class="sports-glow"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="sports-footer">
+            <p>Tournament System v2.0 • Sports Analytics Module</p>
+        </footer>
+    </div>
+
+    <script>
+        // Particle animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('sportsParticles');
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'sports-particle';
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                particle.style.width = `${Math.random() * 10 + 5}px`;
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                container.appendChild(particle);
+            }
+
+            // Add click handler for IPL card
+            document.getElementById('iplPredictorCard').addEventListener('click', function() {
+                window.location.href = "{{ url_for('main.ipl_prediction') }}";
+            });
+        });
+    </script>
+</body>
+</html>

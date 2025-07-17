@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ league.name }} - Teams</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
+    <style>
+        /* Team name and icon alignment */
+        .team-cell {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .team-logo {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4fc3f7;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .team-link {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .team-link:hover {
+            color: #4fc3f7;
+            text-decoration: underline;
+        }
+
+        /* Table improvements */
+        .modern-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+        }
+
+        .modern-table th {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.9);
+            padding: 14px 16px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modern-table td {
+            padding: 14px 16px;
+            background: rgba(40, 40, 60, 0.7);
+            vertical-align: middle;
+        }
+
+        .modern-table tr {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .modern-table tr:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Empty state styling */
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .empty-state i {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="management-glass">
+    <div class="glass-container">
+        <div class="card-glass">
+            <div class="content-header">
+                <h1><i class="fas fa-users"></i> {{ league.name }} Teams</h1>
+                <a href="{{ url_for('main.league_detail', league_id=league.id) }}" class="btn-glass">
+                    <i class="fas fa-arrow-left"></i> Back to League
+                </a>
+            </div>
+
+            {% if teams %}
+            <div class="table-container">
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th>Team</th>
+                            <th>Coach</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for team in teams %}
+                        <tr>
+                            <td>
+                                <div class="team-cell">
+                                    <div class="team-logo">
+                                        <i class="fas fa-shield-alt"></i>
+                                    </div>
+                                    <a href="{{ url_for('main.team_detail', team_id=team.id) }}" class="team-link">
+                                        {{ team.name }}
+                                    </a>
+                                </div>
+                            </td>
+                            <td>{{ team.coach }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-info-circle"></i>
+                <p>No teams have been added to this league yet</p>
+            </div>
+            {% endif %}
+
+            <div class="form-actions">
+                <a href="{{ url_for('main.team_management', league_id=league.id) }}" class="btn-glass">
+                    <i class="fas fa-users-cog"></i> Manage Teams
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,138 @@
+/* View Lineup Styles */
+.lineup-header {
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+}
+
+.lineup-header h1 {
+    margin: 0;
+    font-size: 2rem;
+    color: #fff;
+}
+
+.formation {
+    color: rgba(255,255,255,0.7);
+    font-size: 1.1rem;
+    margin: 0.5rem 0 1.5rem;
+}
+
+.lineup-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+}
+
+.starting-xi {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 1.5rem;
+}
+
+.pitch {
+    background: linear-gradient(135deg, rgba(46, 125, 50, 0.2) 0%, rgba(27, 94, 32, 0.2) 100%);
+    border-radius: 5px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    position: relative;
+    min-height: 400px;
+}
+
+.position-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+}
+
+.position-row.gk {
+    margin-top: 1rem;
+}
+
+.position-row.defenders {
+    margin-top: 3rem;
+}
+
+.position-row.midfielders {
+    margin-top: 3rem;
+}
+
+.position-row.forwards {
+    margin-top: 3rem;
+}
+
+.player-card {
+    background: rgba(255,255,255,0.1);
+    border-radius: 5px;
+    padding: 0.75rem;
+    text-align: center;
+    min-width: 80px;
+    transition: all 0.3s;
+}
+
+.player-card:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-3px);
+}
+
+.jersey-number {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+.player-name {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.9);
+    margin-top: 0.25rem;
+}
+
+.substitutes {
+    background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    padding: 1.5rem;
+}
+
+.subs-list {
+    margin-top: 1rem;
+}
+
+.sub-player {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sub-player .jersey-number {
+    margin-right: 1rem;
+    font-weight: bold;
+    color: #4facfe;
+}
+
+.sub-player .player-name {
+    flex-grow: 1;
+    color: rgba(255,255,255,0.9);
+}
+
+.sub-player .player-position {
+    color: rgba(255,255,255,0.6);
+    font-size: 0.8rem;
+    background: rgba(0,0,0,0.2);
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+}
+
+@media (max-width: 768px) {
+    .lineup-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .position-row {
+        flex-wrap: wrap;
+    }
+    
+    .player-card {
+        min-width: 60px;
+    }
+}

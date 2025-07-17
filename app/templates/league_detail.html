@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ league.name }} - League Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
+    <style>
+        /* Enhanced card styling */
+        .option-card {
+            background: rgba(40, 40, 60, 0.7); /* Darker semi-transparent background */
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .option-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            background: rgba(50, 50, 80, 0.8);
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-right: 15px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .card-icon.teams { background-color: rgba(76, 175, 80, 0.2); color: #4CAF50; }
+        .card-icon.fixtures { background-color: rgba(33, 150, 243, 0.2); color: #2196F3; }
+        .card-icon.leaderboard { background-color: rgba(255, 193, 7, 0.2); color: #FFC107; }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-content h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.2rem;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .card-content p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        .card-badge {
+            display: inline-block;
+            margin-top: 5px;
+            padding: 3px 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .arrow {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+    </style>
+</head>
+<body class="management-glass">
+    <div class="glass-container">
+        <!-- Back Navigation -->
+        <div class="top-navigation">
+            <a href="{{ url_for('main.league_management') }}" class="btn-back">
+                <i class="fas fa-arrow-left"></i> All Leagues
+            </a>
+        </div>
+
+        <div class="card-glass">
+            <!-- League Header -->
+            <div class="league-header">
+                <div class="league-title">
+                    <h1>{{ league.name }}</h1>
+                    <span class="league-status {{ 'active' if league.is_active else 'completed' }}">
+                        {{ 'Active' if league.is_active else 'Completed' }}
+                    </span>
+                </div>
+                
+                <div class="league-meta">
+                    <p class="league-dates">
+                        <i class="fas fa-calendar-alt"></i>
+                        {{ league.start_date.strftime('%b %d, %Y') }} - {{ league.end_date.strftime('%b %d, %Y') }}
+                    </p>
+                    <p class="league-teams-count">
+                        <i class="fas fa-users"></i>
+                        {{ league.teams|length }} Teams
+                    </p>
+                </div>
+            </div>
+
+            <!-- Quick Stats Bar -->
+            <div class="quick-stats">
+                <div class="stat-card">
+                    <div class="stat-value">{{ league.fixtures|selectattr('status','equalto','Pending')|list|length }}</div>
+                    <div class="stat-label">Upcoming</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ league.fixtures|selectattr('status','equalto','Completed')|list|length }}</div>
+                    <div class="stat-label">Played</div>
+                </div>
+            </div>
+
+            <!-- Main Options Grid -->
+            <div class="league-options-grid">
+                <!-- Teams Management -->
+                <a href="{{ url_for('main.league_teams', league_id=league.id) }}" class="option-card">
+                    <div class="card-icon teams">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Teams Management</h3>
+                        <p>View and manage all teams in this league</p>
+                        <span class="card-badge">{{ league.teams|length }} teams registered</span>
+                    </div>
+                    <i class="fas fa-chevron-right arrow"></i>
+                </a>
+
+                <!-- Fixtures Management -->
+                <a href="{{ url_for('main.league_fixtures', league_id=league.id) }}" class="option-card">
+                    <div class="card-icon fixtures">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Fixtures Schedule</h3>
+                        <p>Manage matches and results</p>
+                        <span class="card-badge">{{ league.fixtures|length }} matches scheduled</span>
+                    </div>
+                    <i class="fas fa-chevron-right arrow"></i>
+                </a>
+
+                <!-- Leaderboard -->
+                <a href="{{ url_for('main.league_leaderboard', league_id=league.id) }}" class="option-card">
+                    <div class="card-icon leaderboard">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>League Standings</h3>
+                        <p>View current rankings and stats</p>
+                        <span class="card-badge">Live standings</span>
+                    </div>
+                    <i class="fas fa-chevron-right arrow"></i>
+                </a>
+            </div>
+
+            <!-- Recent Matches Section -->
+            <div class="recent-matches">
+                <h2><i class="fas fa-clock"></i> Recent Matches</h2>
+                <div class="match-list">
+                    {% set recent_matches = league.fixtures|selectattr('status','equalto','Completed')|sort(attribute='date', reverse=True)|list %}
+                    {% if recent_matches %}
+                        {% for match in recent_matches[:3] %}
+                        <div class="match-item">
+                            <div class="match-icon">
+                                <i class="fas fa-futbol"></i>
+                            </div>
+                            <div class="match-details">
+                                <p>{{ match.home_team.name }} {{ match.home_score }} - {{ match.away_score }} {{ match.away_team.name }}</p>
+                                <span class="match-date">{{ match.date.strftime('%b %d, %Y') }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="fas fa-info-circle"></i>
+                            <p>No recent matches</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

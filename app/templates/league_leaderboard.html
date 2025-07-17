@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ league.name }} - Leaderboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
+    <style>
+        .leaderboard-container {
+            margin-top: 30px;
+        }
+        
+        .standings-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .standings-table th {
+            background: rgba(40, 40, 60, 0.9);
+            padding: 15px;
+            text-align: center;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+        
+        .standings-table td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .standings-table tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .standings-table tr:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .team-cell {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .position {
+            font-weight: bold;
+            width: 30px;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .position-1 { color: gold; }
+        .position-2 { color: silver; }
+        .position-3 { color: #cd7f32; } /* bronze */
+    </style>
+</head>
+<body class="management-glass">
+    <div class="glass-container animate__animated animate__fadeIn">
+        <div class="card-glass">
+            <div class="content-header">
+                <h1><i class="fas fa-trophy"></i> {{ league.name }} Leaderboard</h1>
+                <a href="{{ url_for('main.league_detail', league_id=league.id) }}" class="btn-glass">
+                    <i class="fas fa-arrow-left"></i> Back to League
+                </a>
+            </div>
+
+            <div class="leaderboard-container">
+                {% if standings %}
+                <table class="standings-table">
+                    <thead>
+                        <tr>
+                            <th>Pos</th>
+                            <th>Team</th>
+                            <th>P</th>
+                            <th>W</th>
+                            <th>D</th>
+                            <th>L</th>
+                            <th>GF</th>
+                            <th>GA</th>
+                            <th>GD</th>
+                            <th>Pts</th>
+                            <th>Form</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for team in standings %}
+                        <tr>
+                            <td><span class="position position-{{ loop.index }}">{{ loop.index }}</span></td>
+                            <td>
+                                <div class="team-cell">
+                                    <div class="team-logo">
+                                        <i class="fas fa-shield-alt"></i>
+                                    </div>
+                                    <span>{{ team.team.name }}</span>
+                                </div>
+                            </td>
+                            <td>{{ team.played }}</td>
+                            <td>{{ team.wins }}</td>
+                            <td>{{ team.draws }}</td>
+                            <td>{{ team.losses }}</td>
+                            <td>{{ team.goals_for }}</td>
+                            <td>{{ team.goals_against }}</td>
+                            <td>{{ team.goals_for - team.goals_against }}</td>
+                            <td><strong>{{ team.points }}</strong></td>
+                            <td>
+                                <!-- Placeholder for form guide -->
+                                <span class="form-guide">---</span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="empty-state animate__animated animate__pulse">
+                    <i class="fas fa-info-circle"></i>
+                    <p>No completed matches yet</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

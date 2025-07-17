@@ -2,89 +2,428 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>League Management</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='leagues.css') }}">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='league.css') }}">
+    <style>
+        /* Modal Styles */
+        /* Improved Edit Modal Styles */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.7);
+        backdrop-filter: blur(5px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+    .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    .modal-content {
+        background: rgba(40, 42, 54, 0.85);
+        padding: 2rem;
+        border-radius: 15px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transform: translateY(-20px);
+        transition: transform 0.3s ease;
+    }
+    .modal-overlay.active .modal-content {
+        transform: translateY(0);
+    }
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        padding-bottom: 1rem;
+    }
+    .modal-title {
+        margin: 0;
+        color: #fff;
+        font-weight: 500;
+        font-size: 1.5rem;
+    }
+    .modal-close {
+        background: rgba(255,255,255,0.1);
+        border: none;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        color: #fff;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;
+    }
+    .modal-close:hover {
+        background: rgba(255,255,255,0.2);
+    }
+    .modal-footer {
+        margin-top: 2rem;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        padding-top: 1.5rem;
+    }
+    .modal-input .modern-input {
+        background: rgba(0,0,0,0.2);
+        color: #fff;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+    .modal-input .modern-input:focus {
+        border-color: #4facfe;
+    }
+    .modal-input label {
+        color: rgba(255,255,255,0.7);
+    }
+    .modal-btn-secondary {
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    .modal-btn-secondary:hover {
+        background: rgba(255,255,255,0.2);
+    }
+    </style>
 </head>
-<body>
-    <div class="container">
-        <h1>League Management</h1>
+<body class="management-glass">
+    <div class="glass-container animate__animated animate__fadeIn">
+        <!-- Back Button -->
+        <a href="{{ url_for('main.home') }}" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
 
-        <form id="league-form">
-            <label for="name">League Name:</label>
-            <input type="text" id="name" name="name" required>
+        <div class="card-glass">
+            <!-- Animated header -->
+            <div class="header-animated">
+                <h1 class="gradient-text">League Management</h1>
+                <div class="pulse-dot"></div>
+            </div>
 
-            <label for="description">Description:</label>
-            <input type="text" id="description" name="description">
+            <!-- Create League Form -->
+            <div class="form-section">
+                <h2><i class="fas fa-plus"></i> Create New League</h2>
+                <form id="league-form" class="modern-form">
+                    <div class="form-row">
+                        <div class="input-container">
+                            <input type="text" id="name" name="name" required class="modern-input">
+                            <label for="name">League Name</label>
+                            <div class="input-bar"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="input-container">
+                            <input type="text" id="description" name="description" class="modern-input">
+                            <label for="description">Description (Optional)</label>
+                            <div class="input-bar"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row dual-inputs">
+                        <div class="input-container">
+                            <input type="date" id="start_date" name="start_date" required class="modern-input">
+                            <label for="start_date">Start Date</label>
+                            <div class="input-bar"></div>
+                        </div>
+                        
+                        <div class="input-container">
+                            <input type="date" id="end_date" name="end_date" required class="modern-input">
+                            <label for="end_date">End Date</label>
+                            <div class="input-bar"></div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-gradient">
+                        <span>Create League</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
 
-            <label for="start_date">Start Date:</label>
-            <input type="date" id="start_date" name="start_date" required>
+            <!-- Leagues Table -->
+            <div class="table-section">
+                <h2><i class="fas fa-trophy"></i> Existing Leagues</h2>
+                <div class="table-wrapper">
+                    <table class="modern-table" id="league-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Filled by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            <label for="end_date">End Date:</label>
-            <input type="date" id="end_date" name="end_date" required>
-
-            <button type="submit">Add League</button>
-        </form>
-
-        <h2>Existing Leagues</h2>
-        <table id="league-table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+    <!-- Edit League Modal -->
+    <div class="modal-overlay" id="editLeagueModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title"><i class="fas fa-edit"></i> Edit League</h2>
+                <button class="modal-close" id="closeEditModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="editLeagueForm">
+                <input type="hidden" id="editLeagueId">
+                <div class="form-row modal-input">
+                    <div class="input-container">
+                        <input type="text" id="editLeagueName" required class="modern-input">
+                        <label for="editLeagueName">League Name</label>
+                        <div class="input-bar"></div>
+                    </div>
+                </div>
+                <div class="form-row modal-input">
+                    <div class="input-container">
+                        <input type="text" id="editLeagueDescription" class="modern-input">
+                        <label for="editLeagueDescription">Description</label>
+                        <div class="input-bar"></div>
+                    </div>
+                </div>
+                <div class="form-row dual-inputs modal-input">
+                    <div class="input-container">
+                        <input type="date" id="editStartDate" required class="modern-input">
+                        <label for="editStartDate">Start Date</label>
+                        <div class="input-bar"></div>
+                    </div>
+                    <div class="input-container">
+                        <input type="date" id="editEndDate" required class="modern-input">
+                        <label for="editEndDate">End Date</label>
+                        <div class="input-bar"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="modal-btn-secondary" id="cancelEditLeague">Cancel</button>
+                    <button type="submit" class="btn-gradient">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script>
+        // Form input effects
+        document.querySelectorAll('.modern-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentNode.querySelector('.input-bar').classList.add('active');
+            });
+            input.addEventListener('blur', function() {
+                this.parentNode.querySelector('.input-bar').classList.remove('active');
+            });
+        });
+
+        // Load leagues
+        let leaguesData = [];
         async function fetchLeagues() {
             const res = await fetch('/leagues');
-            const data = await res.json();
-
+            leaguesData = await res.json();
             const tbody = document.querySelector('#league-table tbody');
             tbody.innerHTML = '';
 
-            data.forEach(league => {
+            leaguesData.forEach(league => {
                 const row = document.createElement('tr');
+                row.className = 'animate__animated animate__fadeIn';
                 row.innerHTML = `
-                    <td>${league.name}</td>
-                    <td>${league.description || ''}</td>
-                    <td>${league.start_date}</td>
-                    <td>${league.end_date}</td>
+                    <td><a href="/league/${league.id}" class="league-link">${league.name}</a></td>
+                    <td>${league.description || '-'}</td>
+                    <td>${new Date(league.start_date).toLocaleDateString()}</td>
+                    <td>${new Date(league.end_date).toLocaleDateString()}</td>
+                    <td class="actions-cell">
+                        <button class="btn-icon edit-league" data-id="${league.id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-icon delete-league" data-id="${league.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
                 `;
                 tbody.appendChild(row);
             });
+
+            // Add hover effects to rows
+            document.querySelectorAll('#league-table tbody tr').forEach(row => {
+                row.addEventListener('mouseenter', () => {
+                    row.style.boxShadow = '0 0 15px rgba(100, 255, 255, 0.3)';
+                });
+                row.addEventListener('mouseleave', () => {
+                    row.style.boxShadow = 'none';
+                });
+            });
+
+            // Setup edit buttons
+            setupEditLeagueButtons();
         }
 
+        // Setup edit league buttons
+        function setupEditLeagueButtons() {
+            document.querySelectorAll('.edit-league').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const leagueId = this.getAttribute('data-id');
+                    const league = leaguesData.find(l => l.id == leagueId);
+                    
+                    if (league) {
+                        document.getElementById('editLeagueId').value = league.id;
+                        document.getElementById('editLeagueName').value = league.name;
+                        document.getElementById('editLeagueDescription').value = league.description || '';
+                        document.getElementById('editStartDate').value = league.start_date;
+                        document.getElementById('editEndDate').value = league.end_date;
+                        
+                        // Show modal
+                        document.getElementById('editLeagueModal').classList.add('active');
+                    }
+                });
+            });
+        }
+
+        // Close modal handlers
+        document.getElementById('closeEditModal').addEventListener('click', closeEditModal);
+        document.getElementById('cancelEditLeague').addEventListener('click', closeEditModal);
+        
+        function closeEditModal() {
+            document.getElementById('editLeagueModal').classList.remove('active');
+        }
+
+        // Handle edit form submission
+        document.getElementById('editLeagueForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const btn = this.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            
+            const leagueId = document.getElementById('editLeagueId').value;
+            const leagueData = {
+                name: document.getElementById('editLeagueName').value.trim(),
+                description: document.getElementById('editLeagueDescription').value.trim(),
+                start_date: document.getElementById('editStartDate').value,
+                end_date: document.getElementById('editEndDate').value
+            };
+
+            try {
+                const response = await fetch(`/leagues/${leagueId}`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(leagueData)
+                });
+
+                if (response.ok) {
+                    closeEditModal();
+                    fetchLeagues(); // Refresh the table
+                } else {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to update league');
+                }
+            } catch (error) {
+                alert(error.message);
+            } finally {
+                btn.innerHTML = originalText;
+            }
+        });
+
+        // Form submission
         document.getElementById('league-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-
+            
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating...';
+            
             const formData = {
-                name: document.getElementById('name').value,
-                description: document.getElementById('description').value,
+                name: document.getElementById('name').value.trim(),
+                description: document.getElementById('description').value.trim(),
                 start_date: document.getElementById('start_date').value,
                 end_date: document.getElementById('end_date').value
             };
 
-            const res = await fetch('/leagues', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(formData)
-            });
+            try {
+                const response = await fetch('/leagues', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(formData)
+                });
 
-            if (res.ok) {
-                await fetchLeagues();
-                e.target.reset(); // Clear form
-            } else {
-                alert('Failed to create league');
+                const result = await response.json();
+                
+                if (response.ok) {
+                    // Success animation
+                    document.querySelector('.pulse-dot').classList.add('pulse');
+                    setTimeout(() => {
+                        document.querySelector('.pulse-dot').classList.remove('pulse');
+                    }, 1000);
+                    
+                    fetchLeagues();
+                    e.target.reset();
+                } else {
+                    // Error animation
+                    document.getElementById('name').classList.add('input-error');
+                    setTimeout(() => {
+                        document.getElementById('name').classList.remove('input-error');
+                    }, 1000);
+                    
+                    alert(result.error || 'Error creating league');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Network error occurred');
+            } finally {
+                btn.innerHTML = '<span>Create League</span><i class="fas fa-arrow-right"></i>';
             }
         });
 
-        fetchLeagues(); // Load leagues on page load
+        // Delete league
+        document.addEventListener('click', async (e) => {
+            if (e.target.closest('.delete-league')) {
+                const btn = e.target.closest('.delete-league');
+                const leagueId = btn.dataset.id;
+                
+                if (confirm('Delete this league and all its teams?')) {
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                    
+                    const response = await fetch(`/leagues/${leagueId}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    if (response.ok) {
+                        fetchLeagues();
+                    } else {
+                        alert('Failed to delete league');
+                    }
+                }
+            }
+        });
+
+        // Initial load
+        fetchLeagues();
     </script>
 </body>
 </html>

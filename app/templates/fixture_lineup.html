@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixture Lineup - {{ fixture.home_team.name }} vs {{ fixture.away_team.name }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fixture_lineup.css') }}">
+    <style>
+        /* Your existing CSS styles here */
+        /* ... (keep all your existing styles) ... */
+
+        /* Add these new styles */
+        .player-card .position-selector {
+            display: none;
+        }
+        
+        .player-card.selected .position-selector {
+            display: block;
+        }
+        
+        .player-card.selected.bench-player .position-selector {
+            display: none;
+        }
+        
+        .player-status {
+            font-size: 0.7rem;
+            padding: 2px 5px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-left: 5px;
+        }
+        
+        .status-starting {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+        }
+        
+        .status-bench {
+            background: rgba(255, 152, 0, 0.2);
+            color: #FF9800;
+        }
+    </style>
+</head>
+<body class="management-glass">
+    <div class="glass-container">
+        <div class="card-glass">
+            <!-- Fixture Header -->
+            <div class="fixture-header">
+                <h1>
+                    <span class="team">{{ fixture.home_team.name }}</span>
+                    <span class="vs">vs</span>
+                    <span class="team">{{ fixture.away_team.name }}</span>
+                </h1>
+                <div class="fixture-meta">
+                    <div class="date">
+                        <i class="fas fa-calendar-alt"></i> 
+                        {{ fixture.date.strftime('%d %b %Y') }}
+                        <span class="time">{{ fixture.date.strftime('%H:%M') }}</span>
+                    </div>
+                    <a href="{{ url_for('main.team_detail', team_id=home_team.id) }}" class="btn-back">
+                        <i class="fas fa-arrow-left"></i> Back to Team
+                    </a>
+                </div>
+            </div>
+
+            <!-- Lineup Form -->
+            <form method="POST" action="{{ url_for('main.fixture_lineup', fixture_id=fixture.id) }}">
+                <div class="lineup-container">
+                    <!-- Home Team Lineup -->
+                    <div class="team-lineup" id="home_team">
+                        <div class="team-header">
+                            <h2><i class="fas fa-home"></i> {{ fixture.home_team.name }}</h2>
+                            <div class="formation-selector">
+                                <label>Formation:</label>
+                                <select name="home_formation">
+                                    {% for formation in ['4-4-2', '4-3-3', '3-5-2', '4-2-3-1', '3-4-3'] %}
+                                    <option value="{{ formation }}" 
+                                        {% if home_lineup and home_lineup.formation == formation %}selected{% endif %}>
+                                        {{ formation }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Starting XI Section -->
+                        <div class="lineup-section">
+                            <h3>Starting XI <small>(Select 11 players)</small></h3>
+                            <div class="player-selection">
+                                {% for player in home_players %}
+                                {% set is_starting = player.id in home_starting_players %}
+                                {% set player_position = '' %}
+                                {% if home_lineup %}
+                                    {% for lp in home_lineup.players if lp.player_id == player.id and lp.is_starting %}
+                                        {% set player_position = lp.position %}
+                                    {% endfor %}
+                                {% endif %}
+                                <div class="player-card {% if is_starting %}selected{% endif %}">
+                                    <input type="checkbox" 
+                                           name="home_lineup[]" 
+                                           value="{{ player.id }}"
+                                           id="home_player_{{ player.id }}"
+                                           {% if is_starting %}checked{% endif %}>
+                                    <label for="home_player_{{ player.id }}" class="player-info">
+                                        <span class="player-name">{{ player.name }}</span>
+                                        <span class="player-position">{{ player.position }} #{{ player.jersey_number }}</span>
+                                        {% if is_starting %}
+                                        <span class="player-status status-starting">Starting</span>
+                                        {% elif player.id in home_bench_players %}
+                                        <span class="player-status status-bench">Bench</span>
+                                        {% endif %}
+                                    </label>
+                                    <select name="home_pos_{{ player.id }}" class="position-selector">
+                                        <option value="">Position</option>
+                                        <option value="GK" {% if player_position == 'GK' %}selected{% endif %}>GK</option>
+                                        <option value="DEF" {% if player_position == 'DEF' %}selected{% endif %}>DEF</option>
+                                        <option value="MID" {% if player_position == 'MID' %}selected{% endif %}>MID</option>
+                                        <option value="FWD" {% if player_position == 'FWD' %}selected{% endif %}>FWD</option>
+                                    </select>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <!-- Substitutes Section -->
+                        <div class="lineup-section">
+                            <h3>Substitutes <small>(Select up to 7 players)</small></h3>
+                            <div class="player-selection">
+                                {% for player in home_players %}
+                                {% set is_bench = player.id in home_bench_players %}
+                                <div class="player-card {% if is_bench %}selected bench-player{% endif %}">
+                                    <input type="checkbox" 
+                                           name="home_bench[]" 
+                                           value="{{ player.id }}"
+                                           id="home_bench_{{ player.id }}"
+                                           {% if is_bench %}checked{% endif %}>
+                                    <label for="home_bench_{{ player.id }}" class="player-info">
+                                        <span class="player-name">{{ player.name }}</span>
+                                        <span class="player-position">{{ player.position }} #{{ player.jersey_number }}</span>
+                                        {% if is_bench %}
+                                        <span class="player-status status-bench">Bench</span>
+                                        {% elif player.id in home_starting_players %}
+                                        <span class="player-status status-starting">Starting</span>
+                                        {% endif %}
+                                    </label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Away Team Lineup -->
+                    <div class="team-lineup" id="away_team">
+                        <div class="team-header">
+                            <h2><i class="fas fa-route"></i> {{ fixture.away_team.name }}</h2>
+                            <div class="formation-selector">
+                                <label>Formation:</label>
+                                <select name="away_formation">
+                                    {% for formation in ['4-4-2', '4-3-3', '3-5-2', '4-2-3-1', '3-4-3'] %}
+                                    <option value="{{ formation }}" 
+                                        {% if away_lineup and away_lineup.formation == formation %}selected{% endif %}>
+                                        {{ formation }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <!-- Starting XI Section -->
+                        <div class="lineup-section">
+                            <h3>Starting XI <small>(Select 11 players)</small></h3>
+                            <div class="player-selection">
+                                {% for player in away_players %}
+                                {% set is_starting = player.id in away_starting_players %}
+                                {% set player_position = '' %}
+                                {% if away_lineup %}
+                                    {% for lp in away_lineup.players if lp.player_id == player.id and lp.is_starting %}
+                                        {% set player_position = lp.position %}
+                                    {% endfor %}
+                                {% endif %}
+                                <div class="player-card {% if is_starting %}selected{% endif %}">
+                                    <input type="checkbox" 
+                                           name="away_lineup[]" 
+                                           value="{{ player.id }}"
+                                           id="away_player_{{ player.id }}"
+                                           {% if is_starting %}checked{% endif %}>
+                                    <label for="away_player_{{ player.id }}" class="player-info">
+                                        <span class="player-name">{{ player.name }}</span>
+                                        <span class="player-position">{{ player.position }} #{{ player.jersey_number }}</span>
+                                        {% if is_starting %}
+                                        <span class="player-status status-starting">Starting</span>
+                                        {% elif player.id in away_bench_players %}
+                                        <span class="player-status status-bench">Bench</span>
+                                        {% endif %}
+                                    </label>
+                                    <select name="away_pos_{{ player.id }}" class="position-selector">
+                                        <option value="">Position</option>
+                                        <option value="GK" {% if player_position == 'GK' %}selected{% endif %}>GK</option>
+                                        <option value="DEF" {% if player_position == 'DEF' %}selected{% endif %}>DEF</option>
+                                        <option value="MID" {% if player_position == 'MID' %}selected{% endif %}>MID</option>
+                                        <option value="FWD" {% if player_position == 'FWD' %}selected{% endif %}>FWD</option>
+                                    </select>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <!-- Substitutes Section -->
+                        <div class="lineup-section">
+                            <h3>Substitutes <small>(Select up to 7 players)</small></h3>
+                            <div class="player-selection">
+                                {% for player in away_players %}
+                                {% set is_bench = player.id in away_bench_players %}
+                                <div class="player-card {% if is_bench %}selected bench-player{% endif %}">
+                                    <input type="checkbox" 
+                                           name="away_bench[]" 
+                                           value="{{ player.id }}"
+                                           id="away_bench_{{ player.id }}"
+                                           {% if is_bench %}checked{% endif %}>
+                                    <label for="away_bench_{{ player.id }}" class="player-info">
+                                        <span class="player-name">{{ player.name }}</span>
+                                        <span class="player-position">{{ player.position }} #{{ player.jersey_number }}</span>
+                                        {% if is_bench %}
+                                        <span class="player-status status-bench">Bench</span>
+                                        {% elif player.id in away_starting_players %}
+                                        <span class="player-status status-starting">Starting</span>
+                                        {% endif %}
+                                    </label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-footer">
+                    <button type="submit" class="btn-gradient">
+                        <i class="fas fa-save"></i> Save Lineups
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Player selection limits and UI interactions
+            const setupLineupSection = (section, maxPlayers, isStartingXI) => {
+                const checkboxes = section.querySelectorAll('input[type="checkbox"]');
+                let checkedCount = section.querySelectorAll('input[type="checkbox"]:checked').length;
+                
+                checkboxes.forEach(checkbox => {
+                    // Initialize selected state
+                    if (checkbox.checked) {
+                        checkbox.closest('.player-card').classList.add('selected');
+                    }
+                    
+                    checkbox.addEventListener('change', function() {
+                        const playerCard = this.closest('.player-card');
+                        
+                        if (this.checked) {
+                            checkedCount++;
+                            playerCard.classList.add('selected');
+                            
+                            // Prevent exceeding max players
+                            if (checkedCount > maxPlayers) {
+                                this.checked = false;
+                                checkedCount--;
+                                playerCard.classList.remove('selected');
+                                alert(`You can only select ${maxPlayers} players for ${isStartingXI ? 'Starting XI' : 'Substitutes'}`);
+                                return;
+                            }
+                            
+                            // If this is starting XI, ensure player isn't also in substitutes
+                            if (isStartingXI) {
+                                const benchCheckbox = document.getElementById(this.id.replace('player_', 'bench_'));
+                                if (benchCheckbox && benchCheckbox.checked) {
+                                    benchCheckbox.checked = false;
+                                    benchCheckbox.dispatchEvent(new Event('change'));
+                                }
+                            } else {
+                                // If this is bench, ensure player isn't also in starting XI
+                                const startingCheckbox = document.getElementById(this.id.replace('bench_', 'player_'));
+                                if (startingCheckbox && startingCheckbox.checked) {
+                                    startingCheckbox.checked = false;
+                                    startingCheckbox.dispatchEvent(new Event('change'));
+                                }
+                            }
+                        } else {
+                            checkedCount--;
+                            playerCard.classList.remove('selected');
+                        }
+                    });
+                });
+            };
+            
+            // Setup all lineup sections
+            const startingSections = document.querySelectorAll('.lineup-section:first-child .player-selection');
+            startingSections.forEach(section => {
+                setupLineupSection(section, 11, true);
+            });
+            
+            const benchSections = document.querySelectorAll('.lineup-section:last-child .player-selection');
+            benchSections.forEach(section => {
+                setupLineupSection(section, 7, false);
+            });
+            
+            // Form submission validation
+            const form = document.querySelector('form');
+            form.addEventListener('submit', function(e) {
+                let isValid = true;
+                const errorMessages = [];
+                
+                // Check home team starting XI
+                const homeStartingChecked = document.querySelectorAll('#home_team .lineup-section:first-child input[type="checkbox"]:checked').length;
+                if (homeStartingChecked !== 11) {
+                    isValid = false;
+                    errorMessages.push(`Please select exactly 11 players for ${home_team.name}'s Starting XI`);
+                }
+                
+                // Check away team starting XI
+                const awayStartingChecked = document.querySelectorAll('#away_team .lineup-section:first-child input[type="checkbox"]:checked').length;
+                if (awayStartingChecked !== 11) {
+                    isValid = false;
+                    errorMessages.push(`Please select exactly 11 players for ${away_team.name}'s Starting XI`);
+                }
+                
+                if (!isValid) {
+                    e.preventDefault();
+                    alert(errorMessages.join('\n'));
+                }
+            });
+        });
+    </script>
+</body>
+</html>

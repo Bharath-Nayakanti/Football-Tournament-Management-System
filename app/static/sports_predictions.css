@@ -1,0 +1,275 @@
+/* Sports Predictions - Glassmorphism Theme */
+/* Base Styles */
+.sports-predictions-body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    overflow-x: hidden;
+}
+
+/* Particle Background */
+.sports-particles {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+}
+
+.sports-particle {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    animation: float 15s infinite linear;
+}
+
+@keyframes float {
+    0% { transform: translateY(0) translateX(0); }
+    50% { transform: translateY(-100px) translateX(50px); }
+    100% { transform: translateY(0) translateX(0); }
+}
+
+/* Main Container */
+.sports-main-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+/* Header */
+.sports-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sports-header-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.sports-header-title h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    background: linear-gradient(90deg, #fff, #a1c4fd);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.sports-header-title i {
+    font-size: 1.8rem;
+    color: #a1c4fd;
+}
+
+/* Navigation Buttons */
+.sports-nav-btn {
+    color: white;
+    text-decoration: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.sports-nav-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.sports-logout-btn {
+    background: rgba(255, 0, 0, 0.2);
+}
+
+.sports-logout-btn:hover {
+    background: rgba(255, 0, 0, 0.3);
+}
+
+/* Prediction Cards Grid */
+.sports-content {
+    padding: 2rem;
+}
+
+.sports-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.sports-card {
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.sports-card:hover {
+    transform: translateY(-10px);
+}
+
+.sports-card.coming-soon {
+    cursor: not-allowed;
+}
+
+.sports-card.coming-soon:hover {
+    transform: none;
+}
+
+/* Card Glass Effect */
+.sports-card-glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 2rem;
+    height: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.sports-card:hover .sports-card-glass {
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Sport Icons */
+.sports-icon {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.sports-icon.cricket {
+    color: #4CAF50;
+    border: 2px solid #4CAF50;
+}
+
+.sports-icon.f1 {
+    color: #E91E63;
+    border: 2px solid #E91E63;
+}
+
+/* Card Text */
+.sports-card h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.5rem;
+}
+
+.sports-gradient-text {
+    background: linear-gradient(90deg, #4CAF50, #8BC34A);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.sports-card p {
+    margin: 0 0 2rem 0;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+}
+
+/* Card Footer */
+.sports-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sports-live-badge {
+    background: rgba(76, 175, 80, 0.2);
+    color: #4CAF50;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.sports-soon-badge {
+    background: rgba(233, 30, 99, 0.2);
+    color: #E91E63;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.sports-accuracy {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+}
+
+/* Glow Effect */
+.sports-glow {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(76, 175, 80, 0.3) 0%, rgba(76, 175, 80, 0) 70%);
+    top: -30px;
+    right: -30px;
+    border-radius: 50%;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sports-card:hover .sports-glow {
+    opacity: 1;
+}
+
+/* Footer */
+.sports-footer {
+    padding: 1.5rem 2rem;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.1);
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .sports-header {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+    
+    .sports-header-title h1 {
+        font-size: 1.5rem;
+    }
+    
+    .sports-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .sports-nav-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+}

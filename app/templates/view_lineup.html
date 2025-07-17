@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ lineup.team.name }} Lineup</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='view_lineup.css') }}">
+</head>
+<body class="management-glass">
+    <div class="glass-container">
+        <div class="card-glass">
+            <div class="lineup-header">
+                <h1>{{ lineup.team.name }} Lineup</h1>
+                <p class="formation">Formation: {{ lineup.formation }}</p>
+                <a href="{{ url_for('main.fixture_lineup', fixture_id=lineup.fixture_id) }}" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Back to Fixture
+                </a>
+            </div>
+            
+            <div class="lineup-container">
+                <div class="starting-xi">
+                    <h2><i class="fas fa-star"></i> Starting XI</h2>
+                    <div class="pitch">
+                        <!-- Render players based on formation -->
+                        {% set formation = lineup.formation.split('-') %}
+                        <!-- Goalkeeper -->
+                        <div class="position-row gk">
+                            {% for player in starting_xi if player.position == 'GK' %}
+                            <div class="player-card">
+                                <div class="jersey-number">{{ player.player.jersey_number if player.player.jersey_number else '#' }}</div>
+                                <div class="player-name">{{ player.player.name }}</div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <!-- Defenders -->
+                        <div class="position-row defenders">
+                            {% for player in starting_xi if player.position == 'DEF' %}
+                            <div class="player-card">
+                                <div class="jersey-number">{{ player.player.jersey_number if player.player.jersey_number else '#' }}</div>
+                                <div class="player-name">{{ player.player.name }}</div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <!-- Midfielders -->
+                        <div class="position-row midfielders">
+                            {% for player in starting_xi if player.position == 'MID' %}
+                            <div class="player-card">
+                                <div class="jersey-number">{{ player.player.jersey_number if player.player.jersey_number else '#' }}</div>
+                                <div class="player-name">{{ player.player.name }}</div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <!-- Forwards -->
+                        <div class="position-row forwards">
+                            {% for player in starting_xi if player.position == 'FWD' %}
+                            <div class="player-card">
+                                <div class="jersey-number">{{ player.player.jersey_number if player.player.jersey_number else '#' }}</div>
+                                <div class="player-name">{{ player.player.name }}</div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="substitutes">
+                    <h2><i class="fas fa-users"></i> Substitutes</h2>
+                    <div class="subs-list">
+                        {% for player in substitutes %}
+                        <div class="sub-player">
+                            <span class="jersey-number">{{ player.player.jersey_number if player.player.jersey_number else '#' }}</span>
+                            <span class="player-name">{{ player.player.name }}</span>
+                            <span class="player-position">{{ player.player.position }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

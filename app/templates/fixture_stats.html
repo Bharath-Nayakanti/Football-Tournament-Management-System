@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ fixture.home_team.name }} vs {{ fixture.away_team.name }} - Stats</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fixture_stats.css') }}">
+</head>
+<body class="dark-theme">
+    <div class="container">
+        <div class="card">
+            <div class="fixture-header">
+                <h1>
+                    <span class="team home-team">{{ fixture.home_team.name }}</span>
+                    <span class="vs">vs</span>
+                    <span class="team away-team">{{ fixture.away_team.name }}</span>
+                </h1>
+                <div class="fixture-meta">
+                    <div class="date">
+                        <i class="fas fa-calendar-alt"></i> 
+                        {{ fixture.date.strftime('%A, %d %B %Y') }}
+                        <span class="time">{{ fixture.date.strftime('%H:%M') }}</span>
+                    </div>
+                    <div class="actions">
+                        <a href="{{ url_for('main.fixture_lineup', fixture_id=fixture.id) }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to Lineup
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <form method="POST" class="stats-form">
+                <div class="score-container">
+                    <div class="score-input">
+                        <input type="number" name="home_score" value="{{ fixture.home_score if fixture.home_score is not none else '' }}" 
+                               min="0" placeholder="0" class="score-field" required>
+                        <span class="score-separator">-</span>
+                        <input type="number" name="away_score" value="{{ fixture.away_score if fixture.away_score is not none else '' }}" 
+                               min="0" placeholder="0" class="score-field" required>
+                    </div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="team-stats">
+                        <h2><i class="fas fa-home"></i> {{ fixture.home_team.name }}</h2>
+                        <div class="table-container">
+                            <table class="stats-table">
+                                <thead>
+                                    <tr>
+                                        <th>Player</th>
+                                        <th>Goals</th>
+                                        <th>Assists</th>
+                                        <th>Cards</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for player in home_players %}
+                                    <tr>
+                                        <td class="player-name">{{ player.name }} <span class="jersey-number">#{{ player.jersey_number if player.jersey_number else '?' }}</span></td>
+                                        <td>
+                                            <input type="number" name="home_goals_{{ player.id }}" 
+                                                   value="{{ player.goals if player.goals else 0 }}" 
+                                                   min="0" class="stat-input">
+                                        </td>
+                                        <td>
+                                            <input type="number" name="home_assists_{{ player.id }}" 
+                                                   value="{{ player.assists if player.assists else 0 }}" 
+                                                   min="0" class="stat-input">
+                                        </td>
+                                        <td class="cards-cell">
+                                            <label class="card-label yellow">
+                                                <input type="checkbox" name="home_yellow_{{ player.id }}" 
+                                                       {% if player.yellow_cards %}checked{% endif %}>
+                                                <i class="fas fa-square yellow-card"></i>
+                                            </label>
+                                            <label class="card-label red">
+                                                <input type="checkbox" name="home_red_{{ player.id }}" 
+                                                       {% if player.red_cards %}checked{% endif %}>
+                                                <i class="fas fa-square red-card"></i>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="team-stats">
+                        <h2><i class="fas fa-route"></i> {{ fixture.away_team.name }}</h2>
+                        <div class="table-container">
+                            <table class="stats-table">
+                                <thead>
+                                    <tr>
+                                        <th>Player</th>
+                                        <th>Goals</th>
+                                        <th>Assists</th>
+                                        <th>Cards</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for player in away_players %}
+                                    <tr>
+                                        <td class="player-name">{{ player.name }} <span class="jersey-number">#{{ player.jersey_number if player.jersey_number else '?' }}</span></td>
+                                        <td>
+                                            <input type="number" name="away_goals_{{ player.id }}" 
+                                                   value="{{ player.goals if player.goals else 0 }}" 
+                                                   min="0" class="stat-input">
+                                        </td>
+                                        <td>
+                                            <input type="number" name="away_assists_{{ player.id }}" 
+                                                   value="{{ player.assists if player.assists else 0 }}" 
+                                                   min="0" class="stat-input">
+                                        </td>
+                                        <td class="cards-cell">
+                                            <label class="card-label yellow">
+                                                <input type="checkbox" name="away_yellow_{{ player.id }}" 
+                                                       {% if player.yellow_cards %}checked{% endif %}>
+                                                <i class="fas fa-square yellow-card"></i>
+                                            </label>
+                                            <label class="card-label red">
+                                                <input type="checkbox" name="away_red_{{ player.id }}" 
+                                                       {% if player.red_cards %}checked{% endif %}>
+                                                <i class="fas fa-square red-card"></i>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-footer">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Match Statistics
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

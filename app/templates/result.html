@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Results | Tournament System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='results.css') }}">
+</head>
+<body>
+    <div class="results-container">
+        <!-- Back Button -->
+        <a href="{{ url_for('main.ipl_prediction') }}" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Predictor
+        </a>
+
+        <h1><i class="fas fa-chart-line"></i> Prediction Results</h1>
+        
+        <div class="match-info">
+            <p><strong>Match:</strong> {{ match_data['team1'] }} vs {{ match_data['team2'] }}</p>
+            <p><strong>Venue:</strong> {{ match_data['venue'] }}</p>
+            <p><strong>Toss:</strong> 
+                {% if match_data['toss_winner'] == 'team1' %}
+                    {{ match_data['team1'] }}
+                {% elif match_data['toss_winner'] == 'team2' %}
+                    {{ match_data['team2'] }}
+                {% else %}
+                    {{ match_data['toss_winner'] }}
+                {% endif %}
+                chose to {{ match_data['toss_decision'] }}
+            </p>
+        </div>
+
+        <h2>Win Probabilities:</h2>
+        <div class="probability-card">
+            <span class="team-name">{{ match_data['team1'] }}</span>
+            <span class="probability-value">{{ "%.1f"|format(probabilities[match_data['team1']] * 100) }}%</span>
+        </div>
+        
+        <div class="probability-card">
+            <span class="team-name">{{ match_data['team2'] }}</span>
+            <span class="probability-value">{{ "%.1f"|format(probabilities[match_data['team2']] * 100) }}%</span>
+        </div>
+
+        <div class="favorite-display">
+            <div class="favorite-label">Predicted Winner</div>
+            <div class="favorite-team">
+                <i class="fas fa-trophy"></i> {{ favorite }}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

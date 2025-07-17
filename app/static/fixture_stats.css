@@ -1,0 +1,324 @@
+/* Dark Theme Variables */
+:root {
+    --bg-primary: #121212;
+    --bg-secondary: #1e1e1e;
+    --bg-tertiary: #2d2d2d;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --accent-primary: #3a86ff;
+    --accent-secondary: #8338ec;
+    --success: #28a745;
+    --danger: #dc3545;
+    --warning: #ffc107;
+    --info: #17a2b8;
+    --border-color: #333;
+    --highlight: rgba(255, 255, 255, 0.05);
+    --home-color: #4e54c8;
+    --away-color: #8f94fb;
+}
+
+/* Base Styles */
+body.dark-theme {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.card {
+    background-color: var(--bg-secondary);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    padding: 25px;
+}
+
+/* Fixture Header */
+.fixture-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.fixture-header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.team {
+    font-weight: 600;
+    padding: 0 15px;
+}
+
+.home-team {
+    color: var(--home-color);
+}
+
+.away-team {
+    color: var(--away-color);
+}
+
+.vs {
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+    font-weight: 300;
+}
+
+.fixture-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.date {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.date .time {
+    margin-left: 10px;
+    color: var(--text-primary);
+}
+
+/* Score Input */
+.score-container {
+    display: flex;
+    justify-content: center;
+    margin: 25px 0;
+}
+
+.score-input {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.score-field {
+    width: 80px;
+    padding: 12px;
+    font-size: 1.5rem;
+    text-align: center;
+    background-color: var(--bg-tertiary);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.score-field:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.25);
+}
+
+.score-separator {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--text-secondary);
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.team-stats h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.team-stats h2 i {
+    font-size: 1.2rem;
+}
+
+/* Stats Table */
+.table-container {
+    overflow-x: auto;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.stats-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.stats-table th {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.stats-table td {
+    padding: 12px 15px;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.stats-table tr:last-child td {
+    border-bottom: none;
+}
+
+.stats-table tr:hover {
+    background-color: var(--highlight);
+}
+
+.player-name {
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.jersey-number {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    margin-left: 5px;
+}
+
+.stat-input {
+    width: 60px;
+    padding: 8px;
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+.stat-input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+}
+
+.cards-cell {
+    display: flex;
+    gap: 10px;
+}
+
+.card-label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.card-label input[type="checkbox"] {
+    display: none;
+}
+
+.yellow-card {
+    color: var(--warning);
+}
+
+.red-card {
+    color: var(--danger);
+}
+
+.card-label input[type="checkbox"]:checked + .yellow-card,
+.card-label input[type="checkbox"]:checked + .red-card {
+    filter: brightness(1.5);
+}
+
+/* Form Footer */
+.form-footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: none;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-secondary {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(--highlight);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+    .fixture-header h1 {
+        font-size: 1.8rem;
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .score-input {
+        gap: 10px;
+    }
+    
+    .score-field {
+        width: 60px;
+        font-size: 1.2rem;
+    }
+    
+    .stats-table th, 
+    .stats-table td {
+        padding: 8px 10px;
+    }
+    
+    .stat-input {
+        width: 50px;
+        padding: 6px;
+    }
+}

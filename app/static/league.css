@@ -1,0 +1,425 @@
+/* leagues.css - Modern League Management Styles */
+
+/* ===== Base Styles ===== */
+.management-glass {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    min-height: 100vh;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 2rem;
+}
+
+.glass-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* ===== Card Container ===== */
+.card-glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2.5rem;
+}
+
+/* ===== Header Styles ===== */
+.header-animated {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.header-animated h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+    background: linear-gradient(90deg, #4facfe, #00f2fe);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.pulse-dot {
+    width: 12px;
+    height: 12px;
+    background: #00f2fe;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #00f2fe;
+}
+
+.pulse {
+    animation: pulse 1s ease;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.5); }
+    100% { transform: scale(1); }
+}
+
+/* ===== Form Section ===== */
+.form-section {
+    background: rgba(15, 23, 42, 0.7);
+    padding: 1.5rem;
+    border-radius: 15px;
+    border: 1px solid rgba(79, 172, 254, 0.2);
+    height: fit-content;
+    position: sticky;
+    top: 2rem;
+}
+
+.form-section h2 {
+    margin: 0 0 1.5rem;
+    font-size: 1.3rem;
+    color: #4facfe;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.modern-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.dual-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.input-container {
+    position: relative;
+    margin-bottom: 0.5rem;
+}
+
+.modern-input {
+    width: 100%;
+    padding: 12px 0;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.modern-input:focus {
+    outline: none;
+    border-bottom-color: #4facfe;
+}
+
+.modern-input:focus + label,
+.modern-input:not(:placeholder-shown) + label {
+    transform: translateY(-20px);
+    font-size: 0.8rem;
+    color: #4facfe;
+}
+
+.input-container label {
+    position: absolute;
+    left: 0;
+    top: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.input-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #4facfe, #00f2fe);
+    transition: width 0.3s ease;
+}
+
+.modern-input:focus ~ .input-bar {
+    width: 100%;
+}
+
+.input-error {
+    border-bottom-color: #dc3545 !important;
+}
+
+.input-error + label {
+    color: #dc3545 !important;
+}
+
+.btn-gradient {
+    background: linear-gradient(90deg, #4facfe, #00f2fe);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.btn-gradient:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(79, 172, 254, 0.4);
+}
+
+/* ===== Table Section ===== */
+.table-section {
+    background: rgba(15, 23, 42, 0.7);
+    padding: 1.5rem;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.table-section h2 {
+    margin: 0 0 1.5rem;
+    font-size: 1.3rem;
+    color: #4facfe;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    border-radius: 10px;
+}
+
+.modern-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.modern-table thead {
+    background: linear-gradient(90deg, rgba(79, 172, 254, 0.2), rgba(0, 242, 254, 0.2));
+}
+
+.modern-table th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 500;
+    color: #4facfe;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+}
+
+.modern-table td {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    vertical-align: middle;
+}
+
+.modern-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.modern-table tbody tr {
+    transition: all 0.3s ease;
+}
+
+.modern-table tbody tr:hover {
+    background: rgba(79, 172, 254, 0.1);
+}
+
+.league-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.league-link:hover {
+    color: #4facfe;
+    text-decoration: underline;
+}
+
+.btn-icon {
+    background: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-icon:hover {
+    background: rgba(220, 53, 69, 0.2);
+    transform: scale(1.1);
+}
+
+/* ===== Responsive Design ===== */
+@media (max-width: 1024px) {
+    .card-glass {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-section {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .management-glass {
+        padding: 1.5rem;
+    }
+    
+    .card-glass {
+        padding: 1.5rem;
+    }
+    
+    .dual-inputs {
+        grid-template-columns: 1fr;
+    }
+    
+    .modern-table th, 
+    .modern-table td {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-animated h1 {
+        font-size: 1.5rem;
+    }
+    
+    .form-section, 
+    .table-section {
+        padding: 1rem;
+    }
+}
+/* Back Button Styles */
+.btn-back {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 10;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 15px;
+    border-radius: 20px;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 14px;
+}
+
+.btn-back:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(-3px);
+}
+
+.btn-back i {
+    font-size: 12px;
+}
+
+/* Adjust glass-container for the back button */
+.glass-container {
+    position: relative;
+    padding-top: 60px; /* Give space for the back button */
+}
+
+/* If you want the back button inside the card instead */
+/*
+.card-glass {
+    position: relative;
+}
+
+.btn-back {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    ... rest of the styles ...
+}
+*/
+/* For league.css */
+.glass-modal {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    color: white;
+}
+
+/* For team_management.css */
+.actions-cell {
+    display: flex;
+    gap: 10px;
+}
+
+.inline-form {
+    display: inline;
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 5px;
+    transition: all 0.3s ease;
+}
+
+.btn-icon:hover {
+    transform: scale(1.1);
+    color: #4facfe;
+}
+
+.tooltip {
+    visibility: hidden;
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.btn-icon:hover .tooltip {
+    visibility: visible;
+    opacity: 1;
+}

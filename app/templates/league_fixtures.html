@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ league.name }} - Fixtures</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
+    <style>
+        .scrollable-table-container {
+            max-height: 60vh;
+            overflow-y: auto;
+            margin-top: 20px;
+            position: relative;
+        }
+        
+        .modern-table thead {
+            position: sticky;
+            top: 0;
+            background: rgba(40, 40, 60, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+        }
+        
+        /* Status badge styles */
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .status-badge.pending {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+        
+        .status-badge.completed {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
+        
+        .status-badge:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Score input styling */
+        .score-input {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+        
+        .score-input input {
+            width: 40px;
+            padding: 5px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 4px;
+        }
+        
+        .save-score-btn {
+            background: rgba(40, 167, 69, 0.3);
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .save-score-btn:hover {
+            background: rgba(40, 167, 69, 0.5);
+        }
+    </style>
+</head>
+<body class="management-glass">
+    <div id="league-data" data-league-id="{{ league.id }}" style="display:none;"></div>
+    
+    <div class="glass-container animate__animated animate__fadeIn">
+        <div class="card-glass">
+            <div class="content-header">
+                <h1><i class="fas fa-calendar-day"></i> {{ league.name }} Fixtures</h1>
+                <a href="{{ url_for('main.league_detail', league_id=league.id) }}" class="btn-glass">
+                    <i class="fas fa-arrow-left"></i> Back to League
+                </a>
+            </div>
+
+            <div class="action-bar">
+                <button id="generate-fixtures-btn" class="btn-glass animate__animated animate__pulse">
+                    <i class="fas fa-magic"></i> Generate Fixtures
+                </button>
+            </div>
+
+            {% if fixtures %}
+            <div class="scrollable-table-container">
+                <table class="modern-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Match</th>
+                            <th>Status</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fixtures-table-body">
+                        {% for fixture in fixtures %}
+                        <tr class="animate__animated animate__fadeIn" data-fixture-id="{{ fixture.id }}">
+                            <td>{{ fixture.date.strftime('%b %d, %Y') }}</td>
+                            <td>
+                                <div class="match-cell">
+                                    <div class="team-badge">
+                                        <div class="logo"><i class="fas fa-shield-alt"></i></div>
+                                        <span>{{ fixture.home_team.name }}</span>
+                                    </div>
+                                    <span class="vs-separator">vs</span>
+                                    <div class="team-badge">
+                                        <div class="logo"><i class="fas fa-shield-alt"></i></div>
+                                        <span>{{ fixture.away_team.name }}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="status-badge {{ fixture.status.lower() }}"
+                                      onclick="toggleFixtureStatus(this, {{ fixture.id }})">
+                                    {{ fixture.status }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if fixture.status == 'Pending' %}
+                                <div class="score-input">
+                                    <input type="number" id="home-score-{{ fixture.id }}" min="0" placeholder="0">
+                                    <span>-</span>
+                                    <input type="number" id="away-score-{{ fixture.id }}" min="0" placeholder="0">
+                                    <button class="save-score-btn" 
+                                            onclick="saveScore({{ fixture.id }})">
+                                        Save
+                                    </button>
+                                </div>
+                                {% else %}
+                                <span class="score-display">{{ fixture.home_score }} - {{ fixture.away_score }}</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state animate__animated animate__pulse">
+                <i class="fas fa-calendar-plus"></i>
+                <p>No fixtures generated yet</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Get league ID from hidden element
+        const leagueId = document.getElementById('league-data').dataset.leagueId;
+        
+        // Generate Fixtures Button
+        document.getElementById('generate-fixtures-btn').addEventListener('click', async function() {
+            const matchesPerDay = prompt('How many matches should be played each day?', '2');
+            
+            if (matchesPerDay === null) return;
+            if (!matchesPerDay || isNaN(matchesPerDay) || parseInt(matchesPerDay) < 1) {
+                alert('Please enter a valid number greater than 0');
+                return;
+            }
+
+            this.disabled = true;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+            
+            try {
+                const response = await fetch(`/league/${leagueId}/fixtures/generate`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ matches_per_day: parseInt(matchesPerDay) })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    this.classList.remove('animate__pulse');
+                    this.classList.add('animate__heartBeat');
+                    setTimeout(() => {
+                        this.classList.remove('animate__heartBeat');
+                        this.classList.add('animate__pulse');
+                    }, 1000);
+                    alert(result.message || 'Fixtures generated successfully!');
+                    window.location.reload();
+                } else {
+                    throw new Error(result.error || 'Failed to generate fixtures');
+                }
+            } catch (error) {
+                alert('Error: ' + error.message);
+                console.error('Fixture generation error:', error);
+            } finally {
+                this.disabled = false;
+                this.innerHTML = '<i class="fas fa-magic"></i> Generate Fixtures';
+            }
+        });
+
+        // Toggle fixture status between Pending and Completed
+        function toggleFixtureStatus(element, fixtureId) {
+            const newStatus = element.textContent.trim() === 'Pending' ? 'Completed' : 'Pending';
+            
+            fetch(`/league/${leagueId}/fixtures/${fixtureId}/status`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: newStatus })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    element.textContent = newStatus;
+                    element.className = `status-badge ${newStatus.toLowerCase()}`;
+                    
+                    // Toggle score input visibility
+                    const row = element.closest('tr');
+                    const scoreCell = row.querySelector('td:nth-child(4)');
+                    
+                    if (newStatus === 'Pending') {
+                        scoreCell.innerHTML = `
+                            <div class="score-input">
+                                <input type="number" id="home-score-${fixtureId}" min="0" placeholder="0">
+                                <span>-</span>
+                                <input type="number" id="away-score-${fixtureId}" min="0" placeholder="0">
+                                <button class="save-score-btn" onclick="saveScore(${fixtureId})">
+                                    Save
+                                </button>
+                            </div>
+                        `;
+                    } else {
+                        scoreCell.innerHTML = `
+                            <span class="score-display">
+                                ${document.getElementById(`home-score-${fixtureId}`)?.value || 0} - 
+                                ${document.getElementById(`away-score-${fixtureId}`)?.value || 0}
+                            </span>
+                        `;
+                    }
+                } else {
+                    throw new Error(data.error || 'Failed to update status');
+                }
+            })
+            .catch(error => {
+                alert('Error updating status: ' + error.message);
+                console.error('Status update error:', error);
+            });
+        }
+
+        // Save score for a fixture
+        function saveScore(fixtureId) {
+            const homeScore = document.getElementById(`home-score-${fixtureId}`).value;
+            const awayScore = document.getElementById(`away-score-${fixtureId}`).value;
+            
+            if (homeScore === '' || awayScore === '') {
+                alert('Please enter both scores');
+                return;
+            }
+
+            fetch(`/league/${leagueId}/fixtures/${fixtureId}/score`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    home_score: parseInt(homeScore),
+                    away_score: parseInt(awayScore)
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Score saved successfully!');
+                    // Optionally update the display without reload
+                    const row = document.querySelector(`tr[data-fixture-id="${fixtureId}"]`);
+                    const statusBadge = row.querySelector('.status-badge');
+                    statusBadge.click(); // Trigger status toggle to Completed
+                } else {
+                    throw new Error(data.error || 'Failed to save score');
+                }
+            })
+            .catch(error => {
+                alert('Error saving score: ' + error.message);
+                console.error('Score save error:', error);
+            });
+        }
+    </script>
+</body>
+</html>

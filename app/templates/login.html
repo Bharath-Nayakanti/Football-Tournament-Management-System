@@ -1,23 +1,68 @@
-<!-- app/templates/login.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Login - Football Tournament</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
 </head>
-<body>
-    <form method="POST">
-        <h1>Login</h1>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+<body class="auth-page">
+    <div class="auth-bg"></div>
+    
+    <div class="auth-container animate__animated animate__fadeIn">
+        <div class="auth-card">
+            <!-- Logo Header -->
+            <div class="auth-header">
+                <div class="logo-circle">
+                    <i class="fas fa-futbol"></i>
+                </div>
+                <h1>Welcome Back</h1>
+                <p>Login to manage your tournaments</p>
+            </div>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-container">
+                        {% for category, message in messages %}
+                            <div class="flash-message flash-{{ category }}">
+                                <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-circle' }}"></i>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
 
-        <button type="submit">Login</button>
-        <p>Don't have an account? <a href="{{ url_for('main.signup') }}">Sign up here</a></p>
-    </form>
+            <!-- Login Form -->
+            <form method="POST" action="{{ url_for('main.login') }}" class="auth-form">
+                <div class="input-group">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="email" name="email" required class="auth-input">
+                    <label for="email">Email Address</label>
+                    <div class="input-bar"></div>
+                </div>
+                
+                <div class="input-group">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password" name="password" required class="auth-input">
+                    <label for="password">Password</label>
+                    <div class="input-bar"></div>
+                </div>
+                
+                <button type="submit" class="btn-auth">
+                    <span>Sign In</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <!-- Footer Links -->
+            <div class="auth-footer">
+                <p>Don't have an account? <a href="{{ url_for('main.signup') }}">Sign up</a></p>
+                <a href="#" class="forgot-password">Forgot password?</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

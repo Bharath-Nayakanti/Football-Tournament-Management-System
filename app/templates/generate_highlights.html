@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Highlights Generator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .highlight-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        .upload-card {
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .video-container {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 1rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        #highlight-video {
+            width: 100%;
+            max-height: 450px;
+        }
+        
+        .progress {
+            height: 25px;
+            border-radius: 12px;
+            margin: 1rem 0;
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .btn-block {
+            width: 100%;
+            border-radius: 8px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        h2, h3 {
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 1.5rem;
+        }
+        
+        .alert {
+            margin-top: 1rem;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            background: rgba(255, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        .form-label {
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        
+        .form-control {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+        
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .form-text {
+            color: rgba(255, 255, 255, 0.7) !important;
+        }
+        
+        .card-body {
+            color: white;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            border: none;
+        }
+        
+        .btn-success {
+            background: linear-gradient(90deg, #38ef7d 0%, #11998e 100%);
+            border: none;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="container highlight-container">
+        <h2 class="text-center mb-4">Generate Match Highlights</h2>
+        
+        <div class="card upload-card">
+            <div class="card-body">
+                <form id="upload-form" method="POST" enctype="multipart/form-data" action="/generate-highlights">
+                    <div class="form-group mb-3">
+                        <label class="form-label fw-bold">Upload Match Video:</label>
+                        <input type="file" class="form-control" name="video" accept="video/*" required>
+                        <small class="form-text text-muted">Supported formats: MP4, MOV, AVI (max 500MB)</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block mt-3">
+                        <i class="fas fa-magic me-2"></i>Generate Highlights
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <div id="progress-container" class="card mt-4" style="display:none;">
+            <div class="card-body">
+                <h3 class="text-center"><i class="fas fa-cog fa-spin me-2"></i>Processing Highlights</h3>
+                <div class="progress mb-3">
+                    <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" 
+                         role="progressbar" style="width: 0%"></div>
+                </div>
+                <p id="status-text" class="text-center mb-0">Preparing to process your video...</p>
+            </div>
+        </div>
+        
+        <div id="result-container" class="card mt-4" style="display:none;">
+            <div class="card-body text-center">
+                <h3><i class="fas fa-check-circle text-success me-2"></i>Your Highlights Are Ready!</h3>
+                <div class="video-container mt-4 mb-4">
+                    <video id="highlight-video" controls class="w-100">
+                        <source id="highlight-source" src="" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <a id="download-btn" class="btn btn-success btn-lg">
+                    <i class="fas fa-download me-2"></i>Download Highlights
+                </a>
+            </div>
+        </div>
+
+        <div id="error-container" class="alert alert-danger mt-4" style="display:none;"></div>
+    </div>
+
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+    $(document).ready(function() {
+        const form = $('#upload-form');
+        const progressContainer = $('#progress-container');
+        const resultContainer = $('#result-container');
+        const errorContainer = $('#error-container');
+        const progressBar = $('#progress-bar');
+        const statusText = $('#status-text');
+        const videoSource = $('#highlight-source');
+        const downloadBtn = $('#download-btn');
+        
+        form.on('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            
+            // Reset UI
+            errorContainer.hide();
+            resultContainer.hide();
+            progressContainer.show();
+            progressBar.css('width', '0%');
+            statusText.text('Starting processing...');
+            
+            // Disable form during processing
+            form.find('button').prop('disabled', true);
+            
+            $.ajax({
+                url: '/generate-highlights',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    if (data.task_id) {
+                        checkStatus(data.task_id);
+                    } else if (data.error) {
+                        showError(data.error);
+                    }
+                },
+                error: function(xhr) {
+                    const error = xhr.responseJSON?.error || 'An unknown error occurred';
+                    showError(error);
+                }
+            });
+        });
+        
+        function checkStatus(taskId) {
+            $.get(`/highlights/status/${taskId}`, function(data) {
+                if (data.status === 'PROCESSING') {
+                    // Update progress
+                    const progress = data.progress || 0;
+                    progressBar.css('width', `${progress}%`);
+                    statusText.text(data.message || 'Processing...');
+                    setTimeout(() => checkStatus(taskId), 1000);
+                } 
+                else if (data.status === 'COMPLETED') {
+                    // Show result
+                    progressContainer.hide();
+                    videoSource.attr('src', `/static/output/highlights/${data.filename}`);
+                    document.getElementById('highlight-video').load();
+                    downloadBtn.attr('href', data.download_url);
+                    resultContainer.show();
+                }
+                else if (data.status === 'FAILED') {
+                    showError(data.error || 'Highlight generation failed');
+                }
+                
+                // Re-enable form if done
+                if (data.status === 'COMPLETED' || data.status === 'FAILED') {
+                    form.find('button').prop('disabled', false);
+                }
+            }).fail(function() {
+                showError('Failed to check status');
+                form.find('button').prop('disabled', false);
+            });
+        }
+        
+        function showError(message) {
+            errorContainer.text(message).show();
+            progressContainer.hide();
+            form.find('button').prop('disabled', false);
+        }
+    });
+    </script>
+</body>
+</html>

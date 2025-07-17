@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Management - {{ league.name }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='team_management.css') }}">
+    <style>
+        /* Modal Styles */
+        /* Improved Edit Modal Styles */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.7);
+        backdrop-filter: blur(5px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+    .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+    .modal-content {
+        background: rgba(40, 42, 54, 0.85);
+        padding: 2rem;
+        border-radius: 15px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transform: translateY(-20px);
+        transition: transform 0.3s ease;
+    }
+    .modal-overlay.active .modal-content {
+        transform: translateY(0);
+    }
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        padding-bottom: 1rem;
+    }
+    .modal-title {
+        margin: 0;
+        color: #fff;
+        font-weight: 500;
+        font-size: 1.5rem;
+    }
+    .modal-close {
+        background: rgba(255,255,255,0.1);
+        border: none;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        color: #fff;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;
+    }
+    .modal-close:hover {
+        background: rgba(255,255,255,0.2);
+    }
+    .modal-footer {
+        margin-top: 2rem;
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        padding-top: 1.5rem;
+    }
+    .modal-input .glow-input {
+        background: rgba(0,0,0,0.2);
+        color: #fff;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+    .modal-input .glow-input:focus {
+        border-color: #4facfe;
+    }
+    .modal-input label {
+        color: rgba(255,255,255,0.7);
+    }
+    .modal-btn-secondary {
+        background: rgba(255,255,255,0.1);
+        color: #fff;
+        border: none;
+        padding: 0.6rem 1.2rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    .modal-btn-secondary:hover {
+        background: rgba(255,255,255,0.2);
+    }
+    </style>
+</head>
+<body class="management-glass">
+    <div class="glass-container">
+        <div class="card-glass">
+            <div class="header-gradient">
+                <h1><i class="fas fa-users"></i> Team Management</h1>
+                <p class="league-subtitle">{{ league.name }}</p>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-container">
+                        {% for category, message in messages %}
+                            <div class="flash-message flash-{{ category }}">
+                                <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-circle' }}"></i>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            <div class="management-grid">
+                <div class="form-panel glass-panel">
+                    <h2><i class="fas fa-plus-circle"></i> Add New Team</h2>
+                    <form method="POST" action="{{ url_for('main.add_team', league_id=league.id) }}" class="sleek-form">
+                        <div class="input-group">
+                            <input type="text" id="name" name="name" required class="glow-input"
+                                   value="{{ request.form.name if request.form.name else '' }}">
+                            <label for="name">Team Name</label>
+                            <div class="input-bar"></div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <input type="text" id="coach" name="coach" required class="glow-input"
+                                   value="{{ request.form.coach if request.form.coach else '' }}">
+                            <label for="coach">Coach</label>
+                            <div class="input-bar"></div>
+                        </div>
+                        
+                        <button type="submit" class="btn-gradient-pulse">
+                            <span>Add Team</span>
+                            <i class="fas fa-plus"></i>
+                            <div class="btn-hover-effect"></div>
+                        </button>
+                    </form>
+                </div>
+
+                <div class="list-panel glass-panel">
+                    <h2><i class="fas fa-list-ul"></i> Current Teams</h2>
+                    
+                    {% if teams %}
+                        <div class="table-container">
+                            <table class="modern-table">
+                                <thead>
+                                    <tr>
+                                        <th>Team</th>
+                                        <th>Coach</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for team in teams %}
+                                    <tr>
+                                        <td>
+                                            <div class="team-avatar">
+                                                <i class="fas fa-shield-alt"></i>
+                                            </div>
+                                            {{ team.name }}
+                                        </td>
+                                        <td>{{ team.coach }}</td>
+                                        <td class="actions-cell">
+                                            <button class="btn-icon edit-team" 
+                                                    data-id="{{ team.id }}"
+                                                    data-name="{{ team.name }}"
+                                                    data-coach="{{ team.coach }}">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <form method="POST" action="{{ url_for('main.delete_team', league_id=league.id, team_id=team.id) }}" class="inline-form">
+                                                <button type="submit" class="btn-icon" onclick="return confirm('Delete {{ team.name }}?')">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="fas fa-info-circle"></i>
+                            <p>No teams have been added yet</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Edit Team Modal -->
+            <div class="modal-overlay" id="editTeamModal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title"><i class="fas fa-edit"></i> Edit Team</h2>
+                        <button class="modal-close" id="closeTeamModal">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <form id="editTeamForm">
+                        <input type="hidden" id="editTeamId">
+                        <div class="input-group modal-input">
+                            <input type="text" id="editTeamName" required class="glow-input">
+                            <label for="editTeamName">Team Name</label>
+                            <div class="input-bar"></div>
+                        </div>
+                        <div class="input-group modal-input">
+                            <input type="text" id="editTeamCoach" required class="glow-input">
+                            <label for="editTeamCoach">Coach</label>
+                            <div class="input-bar"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="modal-btn-secondary" id="cancelEditTeam">Cancel</button>
+                            <button type="submit" class="btn-gradient-pulse">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <a href="{{ url_for('main.league_teams', league_id=league.id) }}" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Back to League
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Input effects
+        document.querySelectorAll('.glow-input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentNode.querySelector('.input-bar').style.width = '100%';
+            });
+            input.addEventListener('blur', function() {
+                if (!this.value) {
+                    this.parentNode.querySelector('.input-bar').style.width = '0';
+                }
+            });
+        });
+
+        // Row hover effects
+        document.querySelectorAll('.modern-table tbody tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.transform = 'translateX(5px)';
+                row.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.transform = 'translateX(0)';
+                row.style.boxShadow = 'none';
+            });
+        });
+
+        // Edit Team functionality
+        document.querySelectorAll('.edit-team').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const teamId = this.getAttribute('data-id');
+                const teamName = this.getAttribute('data-name');
+                const teamCoach = this.getAttribute('data-coach');
+                
+                document.getElementById('editTeamId').value = teamId;
+                document.getElementById('editTeamName').value = teamName;
+                document.getElementById('editTeamCoach').value = teamCoach;
+                
+                // Trigger focus to show labels correctly
+                document.getElementById('editTeamName').focus();
+                document.getElementById('editTeamName').blur();
+                document.getElementById('editTeamCoach').focus();
+                document.getElementById('editTeamCoach').blur();
+                
+                // Show modal
+                document.getElementById('editTeamModal').classList.add('active');
+            });
+        });
+
+        // Close modal handlers
+        document.getElementById('closeTeamModal').addEventListener('click', closeTeamModal);
+        document.getElementById('cancelEditTeam').addEventListener('click', closeTeamModal);
+        
+        function closeTeamModal() {
+            document.getElementById('editTeamModal').classList.remove('active');
+        }
+
+        // Handle edit form submission
+        document.getElementById('editTeamForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const btn = this.querySelector('button[type="submit"]');
+            const originalHtml = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            
+            const teamId = document.getElementById('editTeamId').value;
+            const teamData = {
+                name: document.getElementById('editTeamName').value.trim(),
+                coach: document.getElementById('editTeamCoach').value.trim()
+            };
+
+            try {
+                const response = await fetch(`/leagues/{{ league.id }}/teams/${teamId}`, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(teamData)
+                });
+
+                if (response.ok) {
+                    closeTeamModal();
+                    window.location.reload(); // Refresh to show changes
+                } else {
+                    const error = await response.json();
+                    throw new Error(error.error || 'Failed to update team');
+                }
+            } catch (error) {
+                alert(error.message);
+            } finally {
+                btn.innerHTML = originalHtml;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,26 +1,74 @@
-<!-- app/templates/signup.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Sign Up - Football Tournament</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
 </head>
-<body>
-    <form method="POST">
-        <h1>Sign Up</h1>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
+<body class="auth-page">
+    <div class="auth-bg signup-bg"></div>
+    
+    <div class="auth-container animate__animated animate__fadeIn">
+        <div class="auth-card">
+            <!-- Logo Header -->
+            <div class="auth-header">
+                <div class="logo-circle">
+                    <i class="fas fa-futbol"></i>
+                </div>
+                <h1>Create Account</h1>
+                <p>Join our tournament system</p>
+            </div>
 
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required>
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-container">
+                        {% for category, message in messages %}
+                            <div class="flash-message flash-{{ category }}">
+                                <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-circle' }}"></i>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
+            <!-- Signup Form -->
+            <form method="POST" action="{{ url_for('main.signup') }}" class="auth-form">
+                <div class="input-group">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" id="username" name="username" required class="auth-input">
+                    <label for="username">Username</label>
+                    <div class="input-bar"></div>
+                </div>
+                
+                <div class="input-group">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="email" name="email" required class="auth-input">
+                    <label for="email">Email Address</label>
+                    <div class="input-bar"></div>
+                </div>
+                
+                <div class="input-group">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="password" name="password" required class="auth-input">
+                    <label for="password">Password</label>
+                    <div class="input-bar"></div>
+                </div>
+                
+                <button type="submit" class="btn-auth">
+                    <span>Create Account</span>
+                    <i class="fas fa-user-plus"></i>
+                </button>
+            </form>
 
-        <button type="submit">Sign Up</button>
-        <p>Already have an account? <a href="{{ url_for('main.login') }}">Log in here</a></p>
-    </form>
+            <!-- Footer Links -->
+            <div class="auth-footer">
+                <p>Already have an account? <a href="{{ url_for('main.login') }}">Sign in</a></p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
