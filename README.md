@@ -1,131 +1,266 @@
-🤝 Project by<br/>
-Bharath Nayakanti and Sagar Das<br/>
----
+# Football Tournament Management System
 
-# ⚽ Football Tournament Management System
+A full-stack Flask application for managing football leagues, teams, fixtures, results, standings, predictions, and AI-assisted match highlight generation.
 
-A comprehensive platform for organizing football tournaments, managing teams and fixtures, tracking live standings, predicting outcomes, and generating video highlights using audio/video processing.
+Built for tournament organizers, sports analysts, and football fans who want a lightweight but feature-rich management platform.
 
 ---
 
-## 🚀 Features
+## Project Contributors
 
-- 🏆 **Tournament Management**
-  - Team registration and management
-  - Fixture generation (round-robin or custom)
-  - Result input interface
-
-- 📊 **Live Standings**
-  - Automatically updates based on match outcomes
-  - Tracks wins, losses, draws, goals scored/conceded
-
-- 🔮 **Match Predictor**
-  - Predicts outcomes using pre-trained ML models (UCL, La Liga)
-  - Dynamically supports user-generated tournaments
-
-- 🎥 **Highlight Generator**
-  - Extracts highlights from full match videos
-  - Uses separate `audio_processing` and `video_processing` modules
-  - Outputs trimmed highlight reels based on exciting moments
+- Bharath Nayakanti
+- Sagar Das
 
 ---
 
-## 🛠️ Tech Stack
+## Overview
 
-- **Backend**: Python (Flask)  
-- **Frontend**: HTML, CSS, JavaScript (Flask templating)  
-- **Database**: SQLite (via Flask-SQLAlchemy)  
-- **Machine Learning**: Scikit-learn, Pandas, NumPy  
-- **Highlight Generation**: OpenCV, Librosa, MoviePy  
+This project combines:
 
----
+- tournament and league administration
+- team/player management
+- fixture scheduling and scoreboard updates
+- live leaderboard generation
+- IPL-style match prediction using machine learning
+- highlight video generation from uploaded match footage
 
-## 📁 Project Structure
-Football-Tournament-Management-System/<br/>
-│<br/>
-├── app/<br/>
-│   ├── highlight_generator/<br/>
-│   │   ├── audio_processing/<br/>
-│   │   ├── video_processing/<br/>
-│   │   ├── process_highlights.py<br/>
-│   │   └── requirements.txt<br/>
-│   ├── predictors/<br/>
-│   ├── static/<br/>
-│   ├── templates/<br/>
-│   ├── models.py<br/>
-│   └── routes.py<br/>
-│
-├── instance/<br/>
-├── migrations/<br/>
-├── .gitignore<br/>
-└── README.md<br/>
-
+The application uses Flask for the backend, SQLAlchemy for database models, Jinja templates for the UI, and a Python ML stack for prediction and video processing.
 
 ---
 
-## 🛠️ Setup Instructions
+## Features
 
-1. **Clone the Repository**
+### Tournament Management
+- create and manage leagues
+- add/delete teams and players
+- generate fixtures automatically
+- update match scores and finish statuses
+- view league standings in real time
+
+### Match and Team Details
+- detailed team profile pages
+- player statistics and squad management
+- fixture lineup management
+- lineup viewing and statistics screens
+
+### Predictions
+- IPL match prediction interface
+- model-based probability output for matchup outcomes
+- result display page with favorite team and probability breakdown
+
+### Highlight Generation
+- upload a match video
+- analyze the file for exciting moments
+- generate highlight clips
+- download and view the final output video
+
+---
+
+## Tech Stack
+
+- Backend: Python, Flask
+- Database: SQLite by default, PostgreSQL-ready via environment config
+- Frontend: HTML, CSS, JavaScript, Jinja templates
+- ML/AI: scikit-learn, pandas, numpy, xgboost, catboost
+- Video/audio processing: OpenCV, librosa
+- Deployment: Docker + Render
+
+---
+
+## Repository Structure
+
+```text
+football-tournament-system/
+├── app/
+│   ├── highlight_generator/
+│   │   ├── audio_processing/
+│   │   ├── video_processing/
+│   │   ├── __init__.py
+│   │   └── process_highlights.py
+│   ├── predictors/
+│   │   └── IPL/
+│   ├── static/
+│   ├── templates/
+│   ├── __init__.py
+│   ├── models.py
+│   └── routes.py
+├── instance/
+├── migrations/
+├── Dockerfile
+├── .dockerignore
+├── config.py
+├── requirements.txt
+├── run.py
+├── backup.sql
+├── reset_db.py
+├── README.md
+├── .gitignore
+└── venv/
+```
+
+---
+
+## Prerequisites
+
+Before running locally, make sure you have:
+
+- Python 3.10+ recommended
+- FFmpeg installed on your machine
+- Git
+
+### Install FFmpeg
+
+On macOS:
 
 ```bash
-git clone https://github.com/Apex1208/Football-Tournament-Management-System.git
+brew install ffmpeg
+```
+
+On Ubuntu/Debian:
+
+```bash
+sudo apt-get update
+sudo apt-get install -y ffmpeg
+```
+
+---
+
+## Local Setup
+
+### 1. Clone the project
+
+```bash
+git clone https://github.com/Bharath-Nayakanti/Football-Tournament-Management-System.git
 cd Football-Tournament-Management-System
 ```
 
-2. **Create a Virtual Environment (Recommended)**
-```bash
+### 2. Create a virtual environment
 
+```bash
 python -m venv venv
-source venv/bin/activate       # On Linux/macOS
-venv\Scripts\activate          # On Windows
+source venv/bin/activate
 ```
 
-3. **Install Required Dependencies**
+On Windows:
+
 ```bash
-# General requirements
+venv\Scripts\activate
+```
+
+### 3. Install dependencies
+
+```bash
 pip install -r requirements.txt
-
-# Highlight-specific dependencies
-cd app/highlight_generator
-pip install -r requirements.txt
-
 ```
 
-4. **Set Up the Database (Flask Migrate)**
+### 4. Set environment variables
+
+Create a `.env` file or export variables in your shell:
+
 ```bash
-flask db init
-flask db migrate -m "Initial migration"
-flask db upgrade
-
+export SECRET_KEY="your-secret-key"
+export FLASK_ENV="development"
 ```
 
-5. **Run the Application**
+Optional for Postgres:
+
 ```bash
-flask run
+export DATABASE_URL="postgresql://user:password@host:5432/dbname"
 ```
-The app will start at: http://127.0.0.1:5000<br/>
----
 
-## 🎞️How to Use the Highlight Generator
+If `DATABASE_URL` is not set, the app falls back to SQLite automatically.
 
-- Input: Full match video (MP4)
-- Output: Trimmed highlight video containing the most exciting moments
+### 5. Run the app
 
----
-
-
-**Run Highlight Generation**
 ```bash
-cd app/highlight_generator
-python process_highlights.py --input path/to/full_match.mp4 --output path/to/highlights.mp4
+python run.py
 ```
 
-You can customize threshold values and detection strategy inside process_highlights.py.<br/>
+Then open:
+
+```text
+http://127.0.0.1:5000
+```
 
 ---
 
-## 📌 Future Enhancements
-- Admin dashboard for full control over leagues and teams
-- Real-time commentary using NLP
-- Live YouTube integration for auto-publishing highlights
-- Deep learning-based highlight detection (YOLO, etc.)
+## Docker Deployment
+
+A Dockerfile is included for deployment on Render or other container platforms.
+
+### Docker build locally
+
+```bash
+docker build -t football-tournament-system .
+docker run -p 10000:10000 --env PORT=10000 football-tournament-system
+```
+
+---
+
+## Render Deployment
+
+This project is configured for deployment on Render using Docker.
+
+### Required environment variables
+
+| Key | Value |
+| --- | --- |
+| `SECRET_KEY` | any long random secret string |
+| `FLASK_ENV` | `production` |
+| `DATABASE_URL` | optional Postgres connection string |
+
+### Docker settings in Render
+
+- Runtime: Docker
+- Dockerfile path: `./Dockerfile`
+- Start command: leave default if using the Dockerfile, or use:
+
+```bash
+gunicorn run:app --bind 0.0.0.0:$PORT
+```
+
+The app is already set to use environment variables and SQLite fallback when no database URL is provided.
+
+---
+
+## Important Notes
+
+- The app is ready for local development and Docker-based deployment.
+- SQLite works well for local use and small demos.
+- PostgreSQL is recommended for production persistence and longer-term reliability.
+- FFmpeg must be available for the highlight generator to work correctly.
+
+---
+
+## Usage Notes
+
+### League management
+- create leagues
+- generate fixtures
+- update scores and standings
+
+### Prediction module
+- visit the IPL prediction page
+- submit team and venue details
+- review the predicted match probabilities
+
+### Highlight generation
+- upload a video file
+- wait for background processing to complete
+- download the generated highlight video
+
+---
+
+## License
+
+This project is for educational and portfolio/demo purposes.
+
+---
+
+## Future Improvements
+
+- upgrade to a full PostgreSQL production database
+- improve admin role control and user permissions
+- add real-time match updates
+- improve highlight detection accuracy with more advanced ML models
+- add REST API support for external integrations
