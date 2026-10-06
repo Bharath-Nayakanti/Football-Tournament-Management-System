@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, redirect, url_for, render_template, flash, session, send_from_directory
+from flask import Blueprint, request, jsonify, redirect, url_for, render_template, flash, session, send_from_directory, current_app
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import db, Team, User, League, Fixture, Player, Lineup , LineupPlayer
@@ -926,6 +926,7 @@ def process_video_background(task_id, video_path):
             tasks[task_id].update({
                 'status': 'COMPLETED',
                 'output': final_path,
+                'filename': os.path.basename(final_path),
                 'download_url': f"/download-highlight/{os.path.basename(final_path)}"
             })
         else:
@@ -949,7 +950,7 @@ def highlight_status(task_id):
 
 @bp.route('/download-highlight/<filename>')
 def download_highlight(filename):
-    highlights_dir = os.path.join('app', 'static', 'output', 'highlights')
+    highlights_dir = os.path.join(current_app.root_path, 'static', 'output', 'highlights')
     try:
         return send_from_directory(
             highlights_dir,

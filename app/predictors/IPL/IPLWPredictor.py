@@ -1,13 +1,15 @@
 # app/predictors/IPL/IPLWPredictor.py
+from pathlib import Path
 import joblib
 import pandas as pd
 import numpy as np
 
 class IPLPredictor:
     def __init__(self):
-        self.model = joblib.load('app/predictors/IPL/ipl_predictor_model.pkl')
-        self.preprocessor = joblib.load('app/predictors/IPL/preprocessor.pkl')
-        self.label_encoder = joblib.load('app/predictors/IPL/label_encoder.pkl')
+        base_dir = Path(__file__).resolve().parent
+        self.model = joblib.load(base_dir / 'ipl_predictor_model.pkl')
+        self.preprocessor = joblib.load(base_dir / 'preprocessor.pkl')
+        self.label_encoder = joblib.load(base_dir / 'label_encoder.pkl')
 
         self.current_teams = [
             'Chennai Super Kings', 'Delhi Capitals', 'Gujarat Titans',

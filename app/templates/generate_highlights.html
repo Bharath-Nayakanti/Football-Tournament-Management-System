@@ -235,9 +235,11 @@
                 else if (data.status === 'COMPLETED') {
                     // Show result
                     progressContainer.hide();
-                    videoSource.attr('src', `/static/output/highlights/${data.filename}`);
+                    const videoUrl = data.download_url || `/download-highlight/${data.filename || 'final_highlight.mp4'}`;
+                    videoSource.attr('src', videoUrl);
                     document.getElementById('highlight-video').load();
-                    downloadBtn.attr('href', data.download_url);
+                    downloadBtn.attr('href', videoUrl);
+                    downloadBtn.attr('download', data.filename || 'final_highlight.mp4');
                     resultContainer.show();
                 }
                 else if (data.status === 'FAILED') {
