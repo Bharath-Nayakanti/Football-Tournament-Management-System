@@ -6,10 +6,9 @@ Built for tournament organizers, sports analysts, and football fans who want a l
 
 ---
 
-## Project Contributors
+## Project Owner
 
 - Bharath Nayakanti
-- Sagar Das
 
 ---
 
@@ -44,7 +43,7 @@ The application uses Flask for the backend, SQLAlchemy for database models, Jinj
 - lineup viewing and statistics screens
 
 ### Predictions
-- IPL match prediction interface
+- IPL match prediction interface only
 - model-based probability output for matchup outcomes
 - result display page with favorite team and probability breakdown
 
@@ -61,7 +60,7 @@ The application uses Flask for the backend, SQLAlchemy for database models, Jinj
 - Backend: Python, Flask
 - Database: SQLite by default, PostgreSQL-ready via environment config
 - Frontend: HTML, CSS, JavaScript, Jinja templates
-- ML/AI: scikit-learn, pandas, numpy, xgboost, catboost
+- ML/AI: scikit-learn, pandas, numpy, xgboost, catboost (IPL prediction model)
 - Video/audio processing: OpenCV, librosa
 - Deployment: Docker + Render
 
@@ -239,10 +238,10 @@ The app is already set to use environment variables and SQLite fallback when no 
 - generate fixtures
 - update scores and standings
 
-### Prediction module
+### IPL prediction module
 - visit the IPL prediction page
 - submit team and venue details
-- review the predicted match probabilities
+- review the predicted match probabilities for IPL matchups only
 
 ### Highlight generation
 - upload a video file
