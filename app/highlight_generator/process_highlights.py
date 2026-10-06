@@ -1,4 +1,5 @@
 import os
+import shutil
 import subprocess
 from .audio_processing.detect_peaks import detect_audio_peaks
 from .video_processing.extract_clips import extract_highlight_clips
@@ -6,7 +7,9 @@ from .video_processing.merge_clips import merge_clips
 from .video_processing.detect_actions import detect_visual_excitement
 
 def extract_audio(video_path, audio_output_path):
-    ffmpeg_path = "/opt/homebrew/bin/ffmpeg"
+    ffmpeg_path = shutil.which("ffmpeg")
+    if not ffmpeg_path:
+        raise FileNotFoundError("ffmpeg is not installed or not found in PATH")
     cmd = [
         ffmpeg_path,
         '-i', video_path,
