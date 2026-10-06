@@ -7,6 +7,7 @@ from config import Config
 db = SQLAlchemy()
 login_manager = LoginManager()
 
+
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
@@ -14,7 +15,7 @@ def create_app(config_class=Config):
     # Initialize extensions
     db.init_app(app)
     login_manager.init_app(app)
-    
+
     # Configure login manager
     login_manager.login_view = 'main.login'
     login_manager.login_message_category = 'info'
@@ -26,14 +27,11 @@ def create_app(config_class=Config):
     # User loader
     from app.models import User
 
-    
-    
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(int(user_id))
-    
 
-
-    
+    with app.app_context():
+        db.create_all()
 
     return app
